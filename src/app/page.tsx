@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Lights } from "@/components/lights";
 
 export default function Home() {
   return (
@@ -96,6 +97,10 @@ export default function Home() {
           Go to nextjs.org →
         </a>
       </footer>
+      <div className={'absolute bottom-0 left-0 w-full h-full z-0 animate-appear opacity-0'}>
+        <Lights />
+      </div>
     </div>
+
   );
 }
