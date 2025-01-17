@@ -192,7 +192,7 @@ function TestimonialsMarquee() {
 
 export function TextLoopCustomVariantsTransition() {
   return (
-    <div className='inline-flex whitespace-pre-wrap text-4xl font-bold text-left mt-20' style={{ color: '#4c2882' }}>
+    <div className='inline-flex whitespace-pre-wrap text-4xl font-bold text-center absolute top-1/8 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-12' style={{ color: '#4c2882' }}>
       F*@#   {' '}
       <TextLoop
         className='overflow-y-clip'
@@ -250,12 +250,12 @@ export default function Home() {
           Contact
         </a>
       </header>
-      <div className="flex justify-center items-center">
-        <TextLoopCustomVariantsTransition />
-      </div>
+        <div className="flex justify-center w-full">
+          <TextLoopCustomVariantsTransition />
+          <p className='inline-flex whitespace-pre-wrap text-m text-center absolute top-1/4 left-1/2 transform -translate-x-1/2' style={{ color: '#4c2882' }}>Intro text — </p>
+        </div>
       <main className="flex flex-col row-start-2 items-center sm:items-start">
-        <p> Blablabla</p>
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 mt-8">
           <TestimonialsMarquee />
         </div>   
       </main>
