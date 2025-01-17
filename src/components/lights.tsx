@@ -6,9 +6,9 @@ export const Lights: React.FC<{ className?: React.ReactNode }> = ({ className })
       className={'w-full h-full relative bottom-[-200px] '}
       style={{
         background:
-          'conic-gradient(from 180deg at 50% 50%,var(--blue-500) 0deg,var(--cyan-400) 180deg,var(--yellow-400) 1turn)',
+          'conic-gradient(from 180deg at 50% 50%,var(--blue-500) 0deg,var(--purple-400) 180deg,var(--pink-400) 1turn)',
         filter: 'blur(75px)',
-        opacity: '20%'
+        opacity: '25%'
       }}
     />
   </div>
