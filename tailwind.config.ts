@@ -19,7 +19,9 @@ const config: Config = {
     extend: {
       animation: {
         moveUp: 'moveUp 1.4s ease forwards',
-        appear: 'appear 1s 1s forwards'
+        appear: 'appear 1s 1s forwards',
+        "marquee-horizontal": "marquee-x var(--duration) infinite linear",
+        "marquee-vertical": "marquee-y var(--duration) linear infinite",
       },
       keyframes: {
         moveUp: {
@@ -29,8 +31,16 @@ const config: Config = {
         appear: {
           from: { opacity: '0' },
           to: { opacity: '1' }
-        }
-      }
+        },
+        "marquee-x": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(calc(-100% - var(--gap)))" },
+        },
+        "marquee-y": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(calc(-100% - var(--gap)))" },
+        },
+      },
     }
   },
   plugins: [

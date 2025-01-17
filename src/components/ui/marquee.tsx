@@ -36,17 +36,17 @@ export default function Marquee({
   children,
   vertical = false,
   repeat = 5,
-  pauseOnHover = false,
+  pauseOnHover = true,
   reverse = false,
   className,
-  applyMask = true,
+  applyMask = false,
   ...props
 }: MarqueeProps) {
   return (
     <div
       {...props}
       className={cn(
-        "group relative flex h-full w-full p-2 [--duration:10s] [--gap:12px] [gap:var(--gap)]",
+        "group relative flex h-full w-full p-0 [--duration:10s] [--gap:12px] [gap:var(--gap)]",
         {
           "flex-col": vertical,
           "flex-row": !vertical,
