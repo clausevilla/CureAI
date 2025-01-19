@@ -1,6 +1,9 @@
 import * as React from "react"
 import { Lights } from "@/components/lights";
 import { TextLoop } from '@/components/ui/text-loop';
+import WaterTracker from '@/components/ui/water-tracker';
+import Ticker from '@/components/ui/ticker';
+import WeatherCard from '@/components/ui/weather-card';
 
 import { Terminal } from "lucide-react"
  
@@ -182,6 +185,8 @@ export function TextLoopCustomVariantsTransition() {
   );
 }
 
+const items = Array(6).fill(null);
+
 export function CardWithForm() {
   return (
     <Card className="w-[350px]">
@@ -221,6 +226,24 @@ export function CardWithForm() {
   )
 }
 
+export function FactCard() {
+  return (
+  <Card className="w-[600px] h-52">
+      <CardHeader>
+      <Ticker
+            className="text-4xl md:text-6xl"
+            value="456.78"
+          />
+        <CardTitle>Create project</CardTitle>
+        <CardDescription>Deploy your new project in one-click.</CardDescription>
+      </CardHeader>
+      <CardFooter className="flex justify-end">
+        <Button>Deploy</Button>
+      </CardFooter>
+    </Card>
+  )
+}
+
 export default function Home() {
   return (
     <div className="relative grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -239,36 +262,30 @@ export default function Home() {
       </header>
         <div className="flex justify-center w-full">
           <TextLoopCustomVariantsTransition />
-          <p className='inline-flex whitespace-pre-wrap text-m text-center absolute top-1/4 left-1/2 transform -translate-x-1/2' style={{ color: '#4c2882' }}>Intro text — </p>
+          <p className='inline-flex whitespace-pre-wrap text-m text-center' style={{ color: '#4c2882' }}>Intro text — </p>
         </div>
 
       <main className="mt-16 flex flex-col items-center">
         <div className="flex flex-wrap justify-center gap-4">
         <Carousel className="w-full max-w-6xl">
           <CarouselContent>
-            <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-              <CardWithForm />
-            </CarouselItem>
-            <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-              <CardWithForm />
-            </CarouselItem>
-            <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-              <CardWithForm />
-            </CarouselItem>
-            <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-              <CardWithForm />
-            </CarouselItem>
-            <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-              <CardWithForm />
-            </CarouselItem>
-            <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-              <CardWithForm />
-            </CarouselItem>
+            {items.map((_, index) => (
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <CardWithForm />
+              </CarouselItem>
+            ))}
           </CarouselContent>
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
-        </div>   
+        </div>
+        <div className="mt-16">
+        <div className="flex flex-row gap-4">
+          <WeatherCard />
+          <WaterTracker />
+          <FactCard />
+        </div>
+        </div> 
       </main>
     <footer className="flex justify-center w-full absolute bottom-8">
       <AppleStyleDock />
