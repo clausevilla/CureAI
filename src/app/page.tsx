@@ -1,19 +1,35 @@
 import { Lights } from "@/components/lights";
 import { TextLoop } from '@/components/ui/text-loop';
 
+import { Terminal } from "lucide-react"
+ 
 import {
-  MorphingDialog,
-  MorphingDialogTrigger,
-  MorphingDialogContent,
-  MorphingDialogTitle,
-  MorphingDialogImage,
-  MorphingDialogSubtitle,
-  MorphingDialogClose,
-  MorphingDialogDescription,
-  MorphingDialogContainer,
-} from '@/components/ui/morphing-dialog';
-import { PlusIcon } from 'lucide-react';
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert"
 
+import * as React from "react"
+ 
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+ 
 import {
   Activity,
   Component,
@@ -97,96 +113,16 @@ export function AppleStyleDock() {
   );
 }
 
-export function MorphingDialogBasicOne() {
+export function AlertDemo() {
   return (
-    <MorphingDialog
-      transition={{
-        type: 'spring',
-        bounce: 0.05,
-        duration: 0.25,
-      }}
-    >
-      <MorphingDialogTrigger
-        style={{
-          borderRadius: '12px',
-        }}
-        className='flex max-w-[270px] flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900'
-      >
-        <MorphingDialogImage
-          src="/images/logo.png"
-          alt='A desk lamp designed by Edouard Wilfrid Buquet in 1925. It features a double-arm design and is made from nickel-plated brass, aluminium and varnished wood.'
-          className='h-48 w-full object-cover'
-        />
-        <div className='flex flex-grow flex-row items-end justify-between p-2'>
-          <div>
-            <MorphingDialogTitle className='text-zinc-950 dark:text-zinc-50'>
-              EB27
-            </MorphingDialogTitle>
-            <MorphingDialogSubtitle className='text-zinc-700 dark:text-zinc-400'>
-              Edouard Wilfrid Buquet
-            </MorphingDialogSubtitle>
-          </div>
-          <button
-            type='button'
-            className='relative ml-1 flex h-6 w-6 shrink-0 scale-100 select-none appearance-none items-center justify-center rounded-lg border border-zinc-950/10 text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98] dark:border-zinc-50/10 dark:bg-zinc-900 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:focus-visible:ring-zinc-500'
-            aria-label='Open dialog'
-          >
-            <PlusIcon size={12} />
-          </button>
-        </div>
-      </MorphingDialogTrigger>
-      <MorphingDialogContainer>
-        <MorphingDialogContent
-          style={{
-            borderRadius: '24px',
-          }}
-          className='pointer-events-auto relative flex h-auto w-full flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900 sm:w-[500px]'
-        >
-          <MorphingDialogImage
-            src='/eb-27-lamp-edouard-wilfrid-buquet.jpg'
-            alt='A desk lamp designed by Edouard Wilfrid Buquet in 1925. It features a double-arm design and is made from nickel-plated brass, aluminium and varnished wood.'
-            className='h-full w-full'
-          />
-          <div className='p-6'>
-            <MorphingDialogTitle className='text-2xl text-zinc-950 dark:text-zinc-50'>
-              EB27
-            </MorphingDialogTitle>
-            <MorphingDialogSubtitle className='text-zinc-700 dark:text-zinc-400'>
-              Edouard Wilfrid Buquet
-            </MorphingDialogSubtitle>
-            <MorphingDialogDescription
-              disableLayoutAnimation
-              variants={{
-                initial: { opacity: 0, scale: 0.8, y: 100 },
-                animate: { opacity: 1, scale: 1, y: 0 },
-                exit: { opacity: 0, scale: 0.8, y: 100 },
-              }}
-            >
-              <p className='mt-2 text-zinc-500 dark:text-zinc-500'>
-                Little is known about the life of Édouard-Wilfrid Buquet. He was
-                born in France in 1866, but the time and place of his death is
-                unfortunately a mystery.
-              </p>
-              <p className='text-zinc-500'>
-                Research conducted in the 1970s revealed that he’d designed the
-                “EB 27” double-arm desk lamp in 1925, handcrafting it from
-                nickel-plated brass, aluminium and varnished wood.
-              </p>
-              <a
-                className='mt-2 inline-flex text-zinc-500 underline'
-                href='https://www.are.na/block/12759029'
-                target='_blank'
-                rel='noopener noreferrer'
-              >
-                Are.na block
-              </a>
-            </MorphingDialogDescription>
-          </div>
-          <MorphingDialogClose className='text-zinc-50' />
-        </MorphingDialogContent>
-      </MorphingDialogContainer>
-    </MorphingDialog>
-  );
+    <Alert>
+      <Terminal className="h-4 w-4" />
+      <AlertTitle>Heads up!</AlertTitle>
+      <AlertDescription>
+        You can add components to your app using the cli.
+      </AlertDescription>
+    </Alert>
+  )
 }
 
 export function TextLoopCustomVariantsTransition() {
@@ -236,9 +172,51 @@ export function TextLoopCustomVariantsTransition() {
   );
 }
 
+export function CardWithForm() {
+  return (
+    <Card className="w-[350px]">
+      <CardHeader>
+        <CardTitle>Create project</CardTitle>
+        <CardDescription>Deploy your new project in one-click.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form>
+          <div className="grid w-full items-center gap-4">
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="name">Name</Label>
+              <Input id="name" placeholder="Name of your project" />
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="framework">Framework</Label>
+              <Select>
+                <SelectTrigger id="framework">
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent position="popper">
+                  <SelectItem value="next">Next.js</SelectItem>
+                  <SelectItem value="sveltekit">SvelteKit</SelectItem>
+                  <SelectItem value="astro">Astro</SelectItem>
+                  <SelectItem value="nuxt">Nuxt.js</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </form>
+      </CardContent>
+      <CardFooter className="flex justify-between">
+        <Button variant="outline">Cancel</Button>
+        <Button>Deploy</Button>
+      </CardFooter>
+    </Card>
+  )
+}
+
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] overflow-x-hidden">
+    <div className="relative grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <div className="absolute bottom-0 left-0 w-full h-full z-[-1] pointer-events-none">
+        <Lights />
+      </div>
        <header className="flex justify-between items-center w-full absolute top-6 left-6 px-6">
         <img src="/images/logo.png" alt="Logo" className="h-4 sm:h-10" />
         <a
@@ -253,14 +231,13 @@ export default function Home() {
           <TextLoopCustomVariantsTransition />
           <p className='inline-flex whitespace-pre-wrap text-m text-center absolute top-1/4 left-1/2 transform -translate-x-1/2' style={{ color: '#4c2882' }}>Intro text — </p>
         </div>
-      <main className="flex flex-col row-start-2 items-center sm:items-start">
-        <div className="flex flex-wrap gap-4 mt-8">
-          <MorphingDialogBasicOne />
+
+      <main className="mt-16 flex flex-col items-center">
+        <div className="flex flex-wrap justify-center gap-4">
+          <AlertDemo />
+          <CardWithForm />
         </div>   
       </main>
-      <div className={'absolute bottom-0 left-0 w-full h-full z-0 animate-appear opacity-0'}>
-        <Lights />
-      </div>
     <footer className="flex justify-center items-center w-full absolute bottom-8 left-6 px-6">
       <AppleStyleDock />
     </footer>
