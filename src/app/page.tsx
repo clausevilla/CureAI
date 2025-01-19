@@ -1,3 +1,4 @@
+import * as React from "react"
 import { Lights } from "@/components/lights";
 import { TextLoop } from '@/components/ui/text-loop';
 
@@ -9,8 +10,14 @@ import {
   AlertTitle,
 } from "@/components/ui/alert"
 
-import * as React from "react"
- 
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -20,8 +27,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+
 import {
   Select,
   SelectContent,
@@ -124,6 +133,7 @@ export function AlertDemo() {
     </Alert>
   )
 }
+
 
 export function TextLoopCustomVariantsTransition() {
   return (
@@ -234,11 +244,33 @@ export default function Home() {
 
       <main className="mt-16 flex flex-col items-center">
         <div className="flex flex-wrap justify-center gap-4">
-          <AlertDemo />
-          <CardWithForm />
+        <Carousel className="w-full max-w-6xl">
+          <CarouselContent>
+            <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+              <CardWithForm />
+            </CarouselItem>
+            <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+              <CardWithForm />
+            </CarouselItem>
+            <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+              <CardWithForm />
+            </CarouselItem>
+            <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+              <CardWithForm />
+            </CarouselItem>
+            <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+              <CardWithForm />
+            </CarouselItem>
+            <CarouselItem className="md:basis-1/2 lg:basis-1/3">
+              <CardWithForm />
+            </CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
         </div>   
       </main>
-    <footer className="flex justify-center items-center w-full absolute bottom-8 left-6 px-6">
+    <footer className="flex justify-center w-full absolute bottom-8">
       <AppleStyleDock />
     </footer>
     </div>
