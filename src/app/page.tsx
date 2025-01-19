@@ -1,6 +1,5 @@
 import { Lights } from "@/components/lights";
 import { TextLoop } from '@/components/ui/text-loop';
-import Marquee from "@/components/ui/marquee";
 
 import {
   MorphingDialog,
@@ -98,111 +97,96 @@ export function AppleStyleDock() {
   );
 }
 
-const testimonials = [
-  {
-    title: 'Testimonial 1',
-    subtitle: 'Happy Customer',
-    image: '/path-to-image1.jpg',
-    description: 'This product is amazing! Totally recommend it to everyone.',
-  },
-  {
-    title: 'Testimonial 2',
-    subtitle: 'Satisfied Client',
-    image: '/path-to-image2.jpg',
-    description: 'Great service and fantastic results!',
-  },
-  {
-    title: 'Testimonial 3',
-    subtitle: 'Long-time User',
-    image: '/path-to-image3.jpg',
-    description: 'I’ve been using this for years, and it’s still the best!',
-  },
-];
-
-function TestimonialsMarquee() {
+export function MorphingDialogBasicOne() {
   return (
-    <Marquee
-    speed={20} // Adjust speed as needed
-    direction="left"
-    className="w-full flex items-center gap-4"
-  >
-    {testimonials.map((testimonial, idx) => (
-      <MorphingDialog
-        key={idx}
-        transition={{
-          type: 'spring',
-          bounce: 0.05,
-          duration: 0.25,
+    <MorphingDialog
+      transition={{
+        type: 'spring',
+        bounce: 0.05,
+        duration: 0.25,
+      }}
+    >
+      <MorphingDialogTrigger
+        style={{
+          borderRadius: '12px',
         }}
+        className='flex max-w-[270px] flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900'
       >
-        <MorphingDialogTrigger
-          style={{
-            borderRadius: '12px',
-          }}
-          className='flex max-w-[270px] flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900'
-        >
-          <MorphingDialogImage
-            src={testimonial.image}
-            alt={testimonial.title}
-            className='h-64 w-full object-cover'
-          />
-          <div className='flex flex-grow flex-row items-end justify-between p-2'>
-            <div>
-              <MorphingDialogTitle className='text-zinc-950 dark:text-zinc-50'>
-                {testimonial.title}
-              </MorphingDialogTitle>
-              <MorphingDialogSubtitle className='text-zinc-700 dark:text-zinc-400'>
-                {testimonial.subtitle}
-              </MorphingDialogSubtitle>
-            </div>
-            <button
+        <MorphingDialogImage
+          src="/images/logo.png"
+          alt='A desk lamp designed by Edouard Wilfrid Buquet in 1925. It features a double-arm design and is made from nickel-plated brass, aluminium and varnished wood.'
+          className='h-48 w-full object-cover'
+        />
+        <div className='flex flex-grow flex-row items-end justify-between p-2'>
+          <div>
+            <MorphingDialogTitle className='text-zinc-950 dark:text-zinc-50'>
+              EB27
+            </MorphingDialogTitle>
+            <MorphingDialogSubtitle className='text-zinc-700 dark:text-zinc-400'>
+              Edouard Wilfrid Buquet
+            </MorphingDialogSubtitle>
+          </div>
+          <button
             type='button'
             className='relative ml-1 flex h-6 w-6 shrink-0 scale-100 select-none appearance-none items-center justify-center rounded-lg border border-zinc-950/10 text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98] dark:border-zinc-50/10 dark:bg-zinc-900 dark:text-zinc-500 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:focus-visible:ring-zinc-500'
             aria-label='Open dialog'
           >
             <PlusIcon size={12} />
           </button>
-          </div>
-        </MorphingDialogTrigger>
-        <MorphingDialogContainer>
-          <MorphingDialogContent
-            style={{
-              borderRadius: '24px',
-            }}
-            className='pointer-events-auto relative flex h-auto w-full flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900 sm:w-[500px]'
-          >
-            <MorphingDialogImage
-              src={testimonial.image}
-              alt={testimonial.title}
-              className='h-full w-full'
-            />
-            <div className='p-6'>
-              <MorphingDialogTitle className='text-2xl text-zinc-950 dark:text-zinc-50'>
-                {testimonial.title}
-              </MorphingDialogTitle>
-              <MorphingDialogSubtitle className='text-zinc-700 dark:text-zinc-400'>
-                {testimonial.subtitle}
-              </MorphingDialogSubtitle>
-              <MorphingDialogDescription
+        </div>
+      </MorphingDialogTrigger>
+      <MorphingDialogContainer>
+        <MorphingDialogContent
+          style={{
+            borderRadius: '24px',
+          }}
+          className='pointer-events-auto relative flex h-auto w-full flex-col overflow-hidden border border-zinc-950/10 bg-white dark:border-zinc-50/10 dark:bg-zinc-900 sm:w-[500px]'
+        >
+          <MorphingDialogImage
+            src='/eb-27-lamp-edouard-wilfrid-buquet.jpg'
+            alt='A desk lamp designed by Edouard Wilfrid Buquet in 1925. It features a double-arm design and is made from nickel-plated brass, aluminium and varnished wood.'
+            className='h-full w-full'
+          />
+          <div className='p-6'>
+            <MorphingDialogTitle className='text-2xl text-zinc-950 dark:text-zinc-50'>
+              EB27
+            </MorphingDialogTitle>
+            <MorphingDialogSubtitle className='text-zinc-700 dark:text-zinc-400'>
+              Edouard Wilfrid Buquet
+            </MorphingDialogSubtitle>
+            <MorphingDialogDescription
               disableLayoutAnimation
               variants={{
                 initial: { opacity: 0, scale: 0.8, y: 100 },
                 animate: { opacity: 1, scale: 1, y: 0 },
                 exit: { opacity: 0, scale: 0.8, y: 100 },
               }}
+            >
+              <p className='mt-2 text-zinc-500 dark:text-zinc-500'>
+                Little is known about the life of Édouard-Wilfrid Buquet. He was
+                born in France in 1866, but the time and place of his death is
+                unfortunately a mystery.
+              </p>
+              <p className='text-zinc-500'>
+                Research conducted in the 1970s revealed that he’d designed the
+                “EB 27” double-arm desk lamp in 1925, handcrafting it from
+                nickel-plated brass, aluminium and varnished wood.
+              </p>
+              <a
+                className='mt-2 inline-flex text-zinc-500 underline'
+                href='https://www.are.na/block/12759029'
+                target='_blank'
+                rel='noopener noreferrer'
               >
-                <p className='mt-2 text-zinc-500 dark:text-zinc-500'>
-                  {testimonial.description}
-                </p>
-              </MorphingDialogDescription>
-            </div>
-            <MorphingDialogClose className='text-zinc-50' />
-          </MorphingDialogContent>
-        </MorphingDialogContainer>
-      </MorphingDialog>
-    ))}
-  </Marquee>
-);
+                Are.na block
+              </a>
+            </MorphingDialogDescription>
+          </div>
+          <MorphingDialogClose className='text-zinc-50' />
+        </MorphingDialogContent>
+      </MorphingDialogContainer>
+    </MorphingDialog>
+  );
 }
 
 export function TextLoopCustomVariantsTransition() {
@@ -222,19 +206,19 @@ export function TextLoopCustomVariantsTransition() {
             y: -20,
             rotateX: -90,
             opacity: 0,
-            filter: 'blur(4px)',
+            scale: 0.9,
           },
           animate: {
             y: 0,
             rotateX: 0,
             opacity: 1,
-            filter: 'blur(0px)',
+            scale: 1,
           },
           exit: {
             y: 20,
             rotateX: 90,
             opacity: 0,
-            filter: 'blur(4px)',
+            scale: 0.9,
           },
         }}
       >
@@ -271,7 +255,7 @@ export default function Home() {
         </div>
       <main className="flex flex-col row-start-2 items-center sm:items-start">
         <div className="flex flex-wrap gap-4 mt-8">
-          <TestimonialsMarquee />
+          <MorphingDialogBasicOne />
         </div>   
       </main>
       <div className={'absolute bottom-0 left-0 w-full h-full z-0 animate-appear opacity-0'}>

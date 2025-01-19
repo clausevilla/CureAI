@@ -17,7 +17,7 @@ export function TextLoop({
   children,
   className,
   interval = 2,
-  transition = { duration: 0.3 },
+  transition = { duration: 0.3, ease: [0.4, 0, 0.2, 1] },
   variants,
   onIndexChange,
   trigger = true,
@@ -40,9 +40,9 @@ export function TextLoop({
   }, [items.length, interval, onIndexChange, trigger]);
 
   const motionVariants: Variants = {
-    initial: { y: 20, opacity: 0 },
-    animate: { y: 0, opacity: 1 },
-    exit: { y: -20, opacity: 0 },
+    initial: { y: 20, opacity: 0,  scale: 0.9 },
+    animate: { y: 0, opacity: 1,  scale: 1},
+    exit: { y: -20, opacity: 0,  scale: 0.9 },
   };
 
   return (
@@ -55,6 +55,10 @@ export function TextLoop({
           exit='exit'
           transition={transition}
           variants={variants || motionVariants}
+          style={{
+            position: 'relative',
+            display: 'inline-block'
+          }}
         >
           {items[currentIndex]}
         </motion.div>

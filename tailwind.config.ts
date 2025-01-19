@@ -32,6 +32,7 @@ const config: Config = {
           from: { opacity: '0' },
           to: { opacity: '1' }
         },
+  
         "marquee-x": {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(calc(-100% - var(--gap)))" },
