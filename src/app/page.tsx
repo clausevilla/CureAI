@@ -4,6 +4,7 @@ import { TextLoop } from '@/components/ui/text-loop';
 import WaterTracker from '@/components/ui/water-tracker';
 import Ticker from '@/components/ui/ticker';
 import WeatherCard from '@/components/ui/weather-card';
+import SplitText from '@/components/ui/split-text';
 
 import { Terminal } from "lucide-react"
  
@@ -244,6 +245,29 @@ export function FactCard() {
   )
 }
 
+export function SurveyCard() {
+  return (
+  <Card className="w-[1125px] h-64 mr-2 relative flex flex-col bg-opacity-10 bg-gradient-to-r from-gray-200 to-gray-300 bg-clip-padding p-4 backdrop-blur-sm backdrop-filter dark:from-gray-700 dark:to-gray-900">
+      <CardHeader>
+      <div className='inline-flex whitespace-pre-wrap text-4xl font-bold' style={{ color: '#4c2882' }}>
+      Cut the
+      </div>
+      </CardHeader>
+      <CardContent className='inline-flex whitespace-pre-wrap text-4xl font-bold'>
+      <SplitText/>
+      <CardDescription>
+        <p>What is your favorite color?</p>
+        <p>What is your favorite food?</p>
+        <p>What is your favorite animal?</p>
+      </CardDescription>
+      </CardContent>
+      <CardFooter className="flex justify-end">
+        <Button>Deploy</Button>
+      </CardFooter>
+    </Card>
+  )
+}
+
 export default function Home() {
   return (
     <div className="relative grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -254,10 +278,10 @@ export default function Home() {
         <img src="/images/logo.png" alt="Logo" className="h-4 sm:h-10" />
         <a
           className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-white gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-11 px-4 sm:px-6 mr-6"
-          href="/contact"
+          href="https://www.1177.se/"
           style={{ backgroundColor: '#4c2882' }}
         >
-          Contact
+          Help
         </a>
       </header>
         <div className="flex justify-center w-full">
@@ -280,12 +304,19 @@ export default function Home() {
         </Carousel>
         </div>
         <div className="mt-16">
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-row justify-between gap-12">
+        <div className="flex flex-row gap-4 mr-12 ml-6">
           <WeatherCard />
           <WaterTracker />
+        </div>
+        <div className="flex flex-row mr-10">
           <FactCard />
         </div>
+        </div>
         </div> 
+        <div className="mt-16">
+          <SurveyCard />
+        </div>
       </main>
     <footer className="flex justify-center w-full absolute bottom-8">
       <AppleStyleDock />

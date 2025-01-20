@@ -88,7 +88,7 @@ export default function Ticker({
   return (
     <div
       className={cn(
-        "relative overflow-hidden whitespace-pre tabular-nums text-[#4c2882]",
+        "relative overflow-hidden whitespace-pre tabular-nums text-4xl font-semibold text-[#4c2882]",
         className,
       )}
     >
