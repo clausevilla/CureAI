@@ -20,6 +20,7 @@ const config: Config = {
       animation: {
         moveUp: 'moveUp 1.4s ease forwards',
         appear: 'appear 1s 1s forwards',
+        sparkle: "sparkle 2s ease-in-out infinite",
         "marquee-horizontal": "marquee-x var(--duration) infinite linear",
         "marquee-vertical": "marquee-y var(--duration) linear infinite",
       },
@@ -40,6 +41,10 @@ const config: Config = {
         "marquee-y": {
           from: { transform: "translateY(0)" },
           to: { transform: "translateY(calc(-100% - var(--gap)))" },
+        },
+        sparkle: {
+          "0%, 100%": { opacity: "0.75", scale: "0.9" },
+          "50%": { opacity: "1", scale: "1" },
         },
       },
     }

@@ -1,18 +1,25 @@
-import * as React from "react"
+import * as React from "react";
+import { cn } from "@/lib/utils";
 import { Lights } from "@/components/lights";
 import { TextLoop } from '@/components/ui/text-loop';
 import WaterTracker from '@/components/ui/water-tracker';
 import Ticker from '@/components/ui/ticker';
 import WeatherCard from '@/components/ui/weather-card';
 import SplitText from '@/components/ui/split-text';
+import AiButton from '@/components/ui/ai-button';
+import { Terminal } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
 
-import { Terminal } from "lucide-react"
- 
 import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/ui/alert"
+  Dialog,
+  DialogDescription,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from '@/components/ui/dialog';
+
 
 import {
   Carousel,
@@ -126,19 +133,6 @@ export function AppleStyleDock() {
   );
 }
 
-export function AlertDemo() {
-  return (
-    <Alert>
-      <Terminal className="h-4 w-4" />
-      <AlertTitle>Heads up!</AlertTitle>
-      <AlertDescription>
-        You can add components to your app using the cli.
-      </AlertDescription>
-    </Alert>
-  )
-}
-
-
 export function TextLoopCustomVariantsTransition() {
   return (
     <div className='inline-flex whitespace-pre-wrap text-4xl font-bold text-center absolute top-1/8 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-12' style={{ color: '#4c2882' }}>
@@ -245,28 +239,122 @@ export function FactCard() {
   )
 }
 
-export function SurveyCard() {
+type SliderProps = React.ComponentProps<typeof Slider>
+export function SliderDemo({ className, ...props }: SliderProps) {
   return (
-  <Card className="w-[1125px] h-64 mr-2 relative flex flex-col bg-opacity-10 bg-gradient-to-r from-gray-200 to-gray-300 bg-clip-padding p-4 backdrop-blur-sm backdrop-filter dark:from-gray-700 dark:to-gray-900">
-      <CardHeader>
-      <div className='inline-flex whitespace-pre-wrap text-4xl font-bold' style={{ color: '#4c2882' }}>
-      Cut the
-      </div>
-      </CardHeader>
-      <CardContent className='inline-flex whitespace-pre-wrap text-4xl font-bold'>
-      <SplitText/>
-      <CardDescription>
-        <p>What is your favorite color?</p>
-        <p>What is your favorite food?</p>
-        <p>What is your favorite animal?</p>
-      </CardDescription>
-      </CardContent>
-      <CardFooter className="flex justify-end">
-        <Button>Deploy</Button>
-      </CardFooter>
-    </Card>
+    <Slider
+      defaultValue={[50]}
+      max={100}
+      step={1}
+      className={cn("w-[60%]", className)}
+      {...props}
+    />
   )
 }
+
+export function SurveyCard() {
+  return (
+    <Card className="w-[1125px] h-64 mr-2 relative flex flex-col bg-opacity-10 bg-gradient-to-r from-gray-200 to-gray-300 bg-clip-padding p-4 backdrop-blur-sm backdrop-filter dark:from-gray-700 dark:to-gray-900">
+      <CardHeader>
+        <div
+          className="inline-flex whitespace-pre-wrap text-4xl font-bold"
+          style={{ color: "#4c2882" }}
+        >
+          Cut the
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="inline-flex whitespace-pre-wrap text-4xl font-bold">
+          <SplitText />
+        </div>
+        <CardDescription>
+          <p>Predict your most likely cancer types</p>
+          <p>And receive AI personalized recommendations</p>
+          <p>Through a short survey!</p>
+        </CardDescription>
+      </CardContent>
+      <CardFooter className="flex justify-end">
+        <Dialog className="w-[95vw] max-w-6xl h-[90vh]">
+          <DialogTrigger asChild>
+            <AiButton  as="div"/>
+          </DialogTrigger>
+          <DialogContent >
+            <DialogHeader>
+              <DialogTitle className="inline-flex whitespace-pre-wrap text-3xl font-bold text-[#4c2882]">
+                Early Detection Survey
+              </DialogTitle>
+            </DialogHeader>
+            <div className="mt-6 space-y-6">
+          {/* Age and Gender Dropdown */}
+          <div className="flex space-x-4">
+            <div className="flex flex-col space-y-1.5 w-1/2">
+              <Label htmlFor="age">Age Range</Label>
+              <Select id="age">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Age" />
+                </SelectTrigger>
+                <SelectContent position="popper">
+                  <SelectItem value="18-20">18-20</SelectItem>
+                  <SelectItem value="21-30">21-30</SelectItem>
+                  <SelectItem value="31-40">31-40</SelectItem>
+                  <SelectItem value="41-50">41-50</SelectItem>
+                  <SelectItem value="51+">51+</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex flex-col space-y-1.5 w-1/2">
+              <Label htmlFor="gender">Gender</Label>
+              <Select id="gender">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Gender" />
+                </SelectTrigger>
+                <SelectContent position="popper">
+                  <SelectItem value="male">Male</SelectItem>
+                  <SelectItem value="female">Female</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          
+          <div className="space-y-6">
+            <Slider label="Are you a smoker?" step={0} max={10} />
+            <Slider label="Alcohol Consumption" step={0} max={10} />
+            <Slider label="Level of physical activity" step={0} max={10} />
+            <Slider label="Level of air pollution in your environment" step={0} max={10} />
+            <Slider label="Level of sun exposure" step={0} max={10} />
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="city">City</Label>
+              <Input id="city" placeholder="Enter your city" />
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="genetic-history">Genetic History</Label>
+              <Input id="genetic-history" placeholder="Enter any known genetic history" />
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <input type="checkbox" id="passive-smoker" className="h-4 w-4 text-purple-500" />
+            <Label htmlFor="passive-smoker" className="text-base">Are you a passive smoker?</Label>
+          </div>
+
+        </div>
+          <button
+            type="submit"
+            className="inline-flex items-center justify-center rounded-lg bg-black px-6 py-3 text-sm font-medium text-zinc-50 dark:bg-white dark:text-zinc-900"
+          >
+            Submit
+          </button>
+      </DialogContent>
+      </Dialog>
+      </CardFooter>
+    </Card>
+  );
+}
+
 
 export default function Home() {
   return (
@@ -322,6 +410,5 @@ export default function Home() {
       <AppleStyleDock />
     </footer>
     </div>
-
   );
 }
