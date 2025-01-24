@@ -184,7 +184,7 @@ const items = Array(6).fill(null);
 
 export function CardWithForm() {
   return (
-    <Card className="w-[350px]">
+    <Card className="lg:w-[350px]">
       <CardHeader>
         <CardTitle>Create project</CardTitle>
         <CardDescription>Deploy your new project in one-click.</CardDescription>
@@ -218,6 +218,23 @@ export function CardWithForm() {
         <Button>Deploy</Button>
       </CardFooter>
     </Card>
+  )
+}
+
+// carousel spacing
+export function CarouselSpacing() {
+  return (
+    <Carousel className="w-full max-w-6xl">
+      <CarouselContent className="-ml-1">
+        {items.map((_, index) => (
+            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+              <CardWithForm />
+            </CarouselItem>
+          ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
   )
 }
 
@@ -358,57 +375,71 @@ export function SurveyCard() {
 
 export default function Home() {
   return (
-    <div className="relative grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <div className="absolute bottom-0 left-0 w-full h-full z-[-1] pointer-events-none">
-        <Lights />
-      </div>
-       <header className="flex justify-between items-center w-full absolute top-6 left-6 px-6">
-        <img src="/images/logo.png" alt="Logo" className="h-4 sm:h-10" />
-        <a
-          className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-white gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-11 px-4 sm:px-6 mr-6"
-          href="https://www.1177.se/"
-          style={{ backgroundColor: '#4c2882' }}
-        >
-          Help
-        </a>
-      </header>
-        <div className="flex justify-center w-full">
-          <TextLoopCustomVariantsTransition />
-          <p className='inline-flex whitespace-pre-wrap text-m text-center' style={{ color: '#4c2882' }}>Intro text — </p>
-        </div>
+    <div>
+  {/* Background Lights */}
+  {/* <div className="absolute bottom-0 left-0 w-full h-full z-[-1] pointer-events-none">
+    <Lights />
+  </div> */}
 
-      <main className="mt-16 flex flex-col items-center">
-        <div className="flex flex-wrap justify-center gap-4">
-        <Carousel className="w-full max-w-6xl">
-          <CarouselContent>
-            {items.map((_, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                <CardWithForm />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-        </div>
-        <div className="mt-16">
-        <div className="flex flex-row justify-between gap-12">
-        <div className="flex flex-row gap-4 mr-12 ml-6">
-          <WeatherCard />
-          <WaterTracker />
-        </div>
-        <div className="flex flex-row mr-10">
-          <FactCard />
-        </div>
-        </div>
-        </div> 
-        <div className="mt-16">
-          <SurveyCard />
-        </div>
-      </main>
-    <footer className="flex justify-center w-full absolute bottom-8">
-      <AppleStyleDock />
-    </footer>
-    </div>
+  {/* Header */}
+  {/* <header className="flex justify-between items-center w-full px-4 sm:px-8 absolute top-4 sm:top-6">
+    <img src="/images/logo.png" alt="Logo" className="h-6 sm:h-10" />
+    <a
+      className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-white gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-8 sm:h-10 px-4 sm:px-6"
+      href="https://www.1177.se/"
+      style={{ backgroundColor: '#4c2882' }}
+    >
+      Help
+    </a>
+  </header> */}
+
+  {/* Text Loop Section */}
+  {/* <div className="flex flex-col items-center w-full px-4">
+    <TextLoopCustomVariantsTransition />
+    <p
+      className="inline-flex text-sm sm:text-base text-center mt-4"
+      style={{ color: '#4c2882' }}
+    >
+      Intro text —
+    </p>
+  </div> */}
+
+  {/* Main Content */}
+  <main className="mt-16 flex flex-col items-center gap-8 p-20 sm:gap-12">
+    {/* Carousel */}
+    {/* <Carousel className="w-full max-w-6xl">
+      <CarouselContent>
+        {items.map((_, index) => (
+          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+            <CardWithForm />
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel> */}
+      <CarouselSpacing />
+
+    {/* Info Section */}
+    {/* <div className="flex flex-wrap justify-between w-full gap-4 sm:gap-6">
+      <div className="flex flex-wrap gap-4">
+        <WeatherCard />
+        <WaterTracker />
+      </div>
+      <FactCard />
+    </div> */}
+
+    {/* Survey Section */}
+    {/* <div className="w-full flex justify-center">
+      <SurveyCard />
+    </div> */}
+  </main>
+
+  {/* Footer */}
+  {/* <footer className="flex justify-center w-full absolute bottom-4">
+    <AppleStyleDock />
+  </footer> */}
+</div>
+
   );
 }
