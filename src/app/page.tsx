@@ -8,7 +8,7 @@ import WeatherCard from '@/components/ui/weather-card';
 import SplitText from '@/components/ui/split-text';
 import AiButton from '@/components/ui/ai-button';
 import { Terminal } from "lucide-react";
-import { Slider } from "@/components/ui/slider";
+
 
 import {
   Dialog,
@@ -135,7 +135,7 @@ export function AppleStyleDock() {
 
 export function TextLoopCustomVariantsTransition() {
   return (
-    <div className='inline-flex whitespace-pre-wrap text-4xl font-bold text-center absolute top-1/8 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-12' style={{ color: '#4c2882' }}>
+    <div className='inline-flex whitespace-pre-wrap text-3xl md:text-4xl font-bold text-center transformf mt-32' style={{ color: '#4c2882' }}>
       F*@#   {' '}
       <TextLoop
         className='overflow-y-clip'
@@ -377,12 +377,12 @@ export default function Home() {
   return (
     <div>
   {/* Background Lights */}
-  {/* <div className="absolute bottom-0 left-0 w-full h-full z-[-1] pointer-events-none">
+  <div className="fixed bottom-0 left-0 w-full h-full z-[-1] pointer-events-none">
     <Lights />
-  </div> */}
+  </div>
 
   {/* Header */}
-  {/* <header className="flex justify-between items-center w-full px-4 sm:px-8 absolute top-4 sm:top-6">
+  <header className="flex justify-between items-center w-full px-4 sm:px-8 absolute top-4 sm:top-6">
     <img src="/images/logo.png" alt="Logo" className="h-6 sm:h-10" />
     <a
       className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-white gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-8 sm:h-10 px-4 sm:px-6"
@@ -391,54 +391,35 @@ export default function Home() {
     >
       Help
     </a>
-  </header> */}
+  </header>
 
   {/* Text Loop Section */}
-  {/* <div className="flex flex-col items-center w-full px-4">
+  <div className="flex flex-col items-center w-full px-4">
     <TextLoopCustomVariantsTransition />
     <p
-      className="inline-flex text-sm sm:text-base text-center mt-4"
+      className="inline-flex text-sm sm:text-base text-center mt-8"
       style={{ color: '#4c2882' }}
     >
       Intro text —
     </p>
-  </div> */}
+  </div>
 
   {/* Main Content */}
-  <main className="mt-16 flex flex-col items-center gap-8 p-20 sm:gap-12">
+  <main className="mt-0 flex flex-col items-center gap-8 p-20 sm:gap-12">
     {/* Carousel */}
-    {/* <Carousel className="w-full max-w-6xl">
-      <CarouselContent>
-        {items.map((_, index) => (
-          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-            <CardWithForm />
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel> */}
-      <CarouselSpacing />
+    <CarouselSpacing />
 
     {/* Info Section */}
-    {/* <div className="flex flex-wrap justify-between w-full gap-4 sm:gap-6">
-      <div className="flex flex-wrap gap-4">
+    <div className="mt-5 flex flex-wrap justify-center w-full gap-4 sm:gap-6">
+      <div className="flex flex-wrap justify-center gap-4">
         <WeatherCard />
         <WaterTracker />
       </div>
       <FactCard />
-    </div> */}
+    </div>
 
-    {/* Survey Section */}
-    {/* <div className="w-full flex justify-center">
-      <SurveyCard />
-    </div> */}
   </main>
 
-  {/* Footer */}
-  {/* <footer className="flex justify-center w-full absolute bottom-4">
-    <AppleStyleDock />
-  </footer> */}
 </div>
 
   );
