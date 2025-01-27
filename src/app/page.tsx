@@ -1,3 +1,4 @@
+"use client"
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Lights } from "@/components/lights";
@@ -8,7 +9,8 @@ import WeatherCard from '@/components/ui/weather-card';
 import SplitText from '@/components/ui/split-text';
 import AiButton from '@/components/ui/ai-button';
 import { Terminal } from "lucide-react";
-
+import { Slider } from "@/components/ui/slider";
+import { useState } from "react";
 
 import {
   Dialog,
@@ -49,92 +51,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
- 
-import {
-  Activity,
-  Component,
-  HomeIcon,
-  Mail,
-  Package,
-  ScrollText,
-  SunMoon,
-} from 'lucide-react';
-
-import { Dock, DockIcon, DockItem, DockLabel } from '@/components/ui/dock';
-
-const data = [
-  {
-    title: 'Home',
-    icon: (
-      <HomeIcon className='h-full w-full text-neutral-600 dark:text-neutral-300'  style={{ color: '#4c2882' }} />
-    ),
-    href: '#',
-  },
-  {
-    title: 'Products',
-    icon: (
-      <Package className='h-full w-full text-neutral-600 dark:text-neutral-300'  style={{ color: '#4c2882' }} />
-    ),
-    href: '#',
-  },
-  {
-    title: 'Components',
-    icon: (
-      <Component className='h-full w-full text-neutral-600 dark:text-neutral-300' style={{ color: '#4c2882' }} />
-    ),
-    href: '#',
-  },
-  {
-    title: 'Activity',
-    icon: (
-      <Activity className='h-full w-full text-neutral-600 dark:text-neutral-300'  style={{ color: '#4c2882' }} />
-    ),
-    href: '#',
-  },
-  {
-    title: 'Change Log',
-    icon: (
-      <ScrollText className='h-full w-full text-neutral-600 dark:text-neutral-300' style={{ color: '#4c2882' }} />
-    ),
-    href: '#',
-  },
-  {
-    title: 'Email',
-    icon: (
-      <Mail className='h-full w-full text-neutral-600 dark:text-neutral-300' style={{ color: '#4c2882' }} />
-    ),
-    href: '#',
-  },
-  {
-    title: 'Theme',
-    icon: (
-      <SunMoon className='h-full w-full text-neutral-600 dark:text-neutral-300' style={{ color: '#4c2882' }} />
-
-    ),
-    href: '#',
-  },
-];
-
-export function AppleStyleDock() {
-  return (
-    <div className='absolute bottom-2 left-1/2 max-w-full -translate-x-1/2'>
-      <Dock className='items-end pb-3'>
-        {data.map((item, idx) => (
-          <DockItem
-            key={idx}
-            className='aspect-square rounded-full bg-gray-200 dark:bg-neutral-800'
-          >
-            <DockLabel>{item.title}</DockLabel>
-            <DockIcon>{item.icon}</DockIcon>
-          </DockItem>
-        ))}
-      </Dock>
-    </div>
-  );
-}
 
 export function TextLoopCustomVariantsTransition() {
   return (
+
     <div className='inline-flex whitespace-pre-wrap text-3xl md:text-4xl font-bold text-center transformf mt-32' style={{ color: '#4c2882' }}>
       F*@#   {' '}
       <TextLoop
@@ -270,108 +190,157 @@ export function SliderDemo({ className, ...props }: SliderProps) {
 }
 
 export function SurveyCard() {
+  // State for form values
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [sliderValues, setSliderValues] = useState({
+    smoker: [0],
+    alcohol: [0],
+    activity: [0],
+    pollution: [0],
+    sunExposure: [0]
+  });
+
+  const handleSliderChange = (name: string, value: number[]) => {
+    setSliderValues(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
   return (
     <Card className="w-[1125px] h-64 mr-2 relative flex flex-col bg-opacity-10 bg-gradient-to-r from-gray-200 to-gray-300 bg-clip-padding p-4 backdrop-blur-sm backdrop-filter dark:from-gray-700 dark:to-gray-900">
       <CardHeader>
         <div
-          className="inline-flex whitespace-pre-wrap text-4xl font-bold"
+          className="inline-flex whitespace-pre-wrap text-4xl font-bold mt-12"
           style={{ color: "#4c2882" }}
         >
           Cut the
         </div>
       </CardHeader>
       <CardContent>
-        <div className="inline-flex whitespace-pre-wrap text-4xl font-bold">
+        <div className="inline-flex whitespace-pre-wrap text-xl font-bold">
           <SplitText />
         </div>
-        <CardDescription>
-          <p>Predict your most likely cancer types</p>
-          <p>And receive AI personalized recommendations</p>
-          <p>Through a short survey!</p>
+        <CardDescription className="absolute top-0 right-0 p-4 mr-8 mt-2 text-right">
+          <CardTitle className="mb-2">Predict your most likely cancer types</CardTitle>
+          <CardTitle className="mb-2">And receive AI personalized recommendations</CardTitle>
+          <CardTitle className="mb-2">Through a short survey!</CardTitle>
         </CardDescription>
-      </CardContent>
-      <CardFooter className="flex justify-end">
-        <Dialog className="w-[95vw] max-w-6xl h-[90vh]">
+        <Dialog>
           <DialogTrigger asChild>
-            <AiButton  as="div"/>
-          </DialogTrigger>
-          <DialogContent >
-            <DialogHeader>
-              <DialogTitle className="inline-flex whitespace-pre-wrap text-3xl font-bold text-[#4c2882]">
+            <AiButton as="div" className="flex justify-end mr-4"/>
+          </DialogTrigger> 
+          <DialogContent className="w-[95vw] max-w-6xl h-[90vh] p-10">
+            <DialogHeader className="mb-8">
+              <DialogTitle className="inline-flex whitespace-pre-wrap text-3xl justify-center font-bold text-[#4c2882]">
                 Early Detection Survey
               </DialogTitle>
             </DialogHeader>
-            <div className="mt-6 space-y-6">
-          {/* Age and Gender Dropdown */}
-          <div className="flex space-x-4">
-            <div className="flex flex-col space-y-1.5 w-1/2">
-              <Label htmlFor="age">Age Range</Label>
-              <Select id="age">
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Age" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  <SelectItem value="18-20">18-20</SelectItem>
-                  <SelectItem value="21-30">21-30</SelectItem>
-                  <SelectItem value="31-40">31-40</SelectItem>
-                  <SelectItem value="41-50">41-50</SelectItem>
-                  <SelectItem value="51+">51+</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex flex-col space-y-1.5 w-1/2">
-              <Label htmlFor="gender">Gender</Label>
-              <Select id="gender">
-                <SelectTrigger>
-                  <SelectValue placeholder="Select Gender" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+
+            <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+              {/* Age and Gender Section */}
+              <div className="grid grid-cols-2 gap-8">
+                <div className="space-y-3">
+                  <Label htmlFor="age-select" className="text-base font-medium">Age Range</Label>
+                  <Select value={age} onValueChange={setAge}>
+                    <SelectTrigger id="age-select" className="w-full">
+                      <SelectValue placeholder="Select Age" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="18-20">18-20</SelectItem>
+                      <SelectItem value="21-30">21-30</SelectItem>
+                      <SelectItem value="31-40">31-40</SelectItem>
+                      <SelectItem value="41-50">41-50</SelectItem>
+                      <SelectItem value="51+">51+</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-3">
+                  <Label htmlFor="gender-select" className="text-base font-medium">Gender</Label>
+                  <Select value={gender} onValueChange={setGender}>
+                    <SelectTrigger id="gender-select" className="w-full">
+                      <SelectValue placeholder="Select Gender" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="male">Male</SelectItem>
+                      <SelectItem value="female">Female</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
           
-          <div className="space-y-6">
-            <Slider label="Are you a smoker?" step={0} max={10} />
-            <Slider label="Alcohol Consumption" step={0} max={10} />
-            <Slider label="Level of physical activity" step={0} max={10} />
-            <Slider label="Level of air pollution in your environment" step={0} max={10} />
-            <Slider label="Level of sun exposure" step={0} max={10} />
-          </div>
+              {/* Sliders Section */}
+              <div className="space-y-6">
+                {[
+                  { label: "Are you a smoker?", name: "smoker" },
+                  { label: "Alcohol Consumption", name: "alcohol" },
+                  { label: "Level of physical activity", name: "activity" },
+                  { label: "Level of air pollution in your environment", name: "pollution" },
+                  { label: "Level of sun exposure", name: "sunExposure" }
+                ].map(({ label, name }) => (
+                  <div key={name} className="space-y-3">
+                    <Label htmlFor={`slider-${name}`} className="text-base font-medium">
+                      {label}
+                    </Label>
+                    <div className="flex items-center gap-4">
+                      <Slider
+                        id={`slider-${name}`}
+                        min={0}
+                        max={10}
+                        step={1}
+                        value={sliderValues[name]}
+                        onValueChange={(value) => handleSliderChange(name, value)}
+                        className="flex-1 [&_[role=slider]]:bg-white [&_[role=slider]]:border-black [&_[role=slider]]:focus:ring-white [&_.relative]:bg-[#CBC3E3]"
+                      />
+                      <span className="w-8 text-right">{sliderValues[name]}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-          <div className="space-y-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="city">City</Label>
-              <Input id="city" placeholder="Enter your city" />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="genetic-history">Genetic History</Label>
-              <Input id="genetic-history" placeholder="Enter any known genetic history" />
-            </div>
-          </div>
+              {/* Input Fields Section */}
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <Label htmlFor="city-input" className="text-base font-medium">City</Label>
+                  <Input id="city-input" placeholder="Enter your city" className="w-full" />
+                </div>
+                
+                <div className="space-y-3">
+                  <Label htmlFor="genetic-history-input" className="text-base font-medium">Genetic History</Label>
+                  <Input id="genetic-history-input" placeholder="Enter any known genetic history" className="w-full" />
+                </div>
+              </div>
 
-          <div className="flex items-center space-x-2">
-            <input type="checkbox" id="passive-smoker" className="h-4 w-4 text-purple-500" />
-            <Label htmlFor="passive-smoker" className="text-base">Are you a passive smoker?</Label>
-          </div>
+              {/* Checkbox Section */}
+              <div className="flex items-center space-x-3">
+                <input 
+                  type="checkbox" 
+                  id="passive-smoker-checkbox"
+                  className="h-5 w-5 rounded border-gray-300 text-purple-500 focus:ring-purple-500"
+                />
+                <Label 
+                  htmlFor="passive-smoker-checkbox" 
+                  className="text-base font-medium"
+                >
+                  Are you a passive smoker?
+                </Label>
+              </div>
 
-        </div>
-          <button
-            type="submit"
-            className="inline-flex items-center justify-center rounded-lg bg-black px-6 py-3 text-sm font-medium text-zinc-50 dark:bg-white dark:text-zinc-900"
-          >
-            Submit
-          </button>
-      </DialogContent>
-      </Dialog>
-      </CardFooter>
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full inline-flex items-center justify-center rounded-lg bg-black px-6 py-3 text-sm font-medium text-zinc-50 dark:bg-white dark:text-zinc-900 hover:bg-opacity-90 transition-colors"
+              >
+                Submit
+              </button>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </CardContent>
     </Card>
   );
 }
-
 
 export default function Home() {
   return (
@@ -417,10 +386,12 @@ export default function Home() {
       </div>
       <FactCard />
     </div>
+        <div className="mt-16">
+          <SurveyCard />
+        </div>
+      </main>
 
-  </main>
-
-</div>
+    </div>
 
   );
 }

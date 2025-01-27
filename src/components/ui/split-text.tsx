@@ -20,7 +20,7 @@ export default function SplitText({
   return (
     <div
       className={cn(
-        "relative mx-auto cursor-sword text-4xl text-[#4c2882] md:text-4xl lg:text-7xl",
+        "relative mx-auto cursor-sword text-4xl text-purple-500 md:text-4xl lg:text-7xl",
         className,
       )}
     >
