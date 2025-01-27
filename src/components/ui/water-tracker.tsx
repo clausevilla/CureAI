@@ -27,15 +27,15 @@ export default function WaterTracker({ dailyGoal = 3000 }: WaterTrackerProps) {
   const progress = (waterIntake / dailyGoal) * 100;
 
   return (
-    <div className={cn("group relative flex size-52 rounded-3xl bg-[#fcf8fd] ")}>
+    <div className={cn("group relative flex size-52 rounded-3xl bg-opacity-10 bg-gradient-to-r from-blue-100 to-blue-200 backdrop-blur-sm backdrop-filter")}>
       <div className="flex flex-1 flex-col p-4">
         <div className="flex items-center justify-center gap-1">
           <Droplet className="fill-blue-500 text-blue-500" size={22} />
-          <p className="text-sm font-semibold text-blue-700">Water</p>
+          <p className="inline-flex whitespace-pre-wrap text-lg font-bold" style={{ color: "#4c2882" }}>Water</p>
         </div>
         <div className="flex flex-1 flex-col items-center justify-center">
-          <h1 className="text-xl font-bold text-blue-700">{waterIntake}ml</h1>
-          <p className="font-sans text-xs text-blue-700">Today</p>
+          <p className="inline-flex whitespace-pre-wrap text-4xl font-bold" style={{ color: "#4c2882" }}>{waterIntake}ml</p>
+          <p className="inline-flex whitespace-pre-wrap text-m" style={{ color: "#4c2882" }}>Today</p>
         </div>
         <div className="mb-2 flex justify-center">
           <button
@@ -56,7 +56,7 @@ export default function WaterTracker({ dailyGoal = 3000 }: WaterTrackerProps) {
       </div>
 
       <div className="relative flex w-10 flex-col items-end">
-        <div className="absolute bottom-0 right-0 h-full w-10 overflow-hidden rounded-r-3xl border-l-2 border-gray-400 bg-gray-300">
+        <div className="absolute bottom-0 right-0 h-full w-10 overflow-hidden rounded-r-3xl bg-gray-400 bg-opacity-30 bg-clip-padding py-1 backdrop-blur-lg backdrop-filter">
           <div
             className={
               "absolute bottom-0 right-0 w-full bg-gradient-to-t from-blue-500 to-blue-700 transition-all duration-100 ease-out"
