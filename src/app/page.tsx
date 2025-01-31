@@ -208,10 +208,10 @@ export function SurveyCard() {
     }));
   };
   return (
-    <Card className="w-[1125px] h-64 mr-2 relative flex flex-col bg-opacity-10 bg-gradient-to-r from-gray-200 to-gray-300 bg-clip-padding p-4 backdrop-blur-sm backdrop-filter dark:from-gray-700 dark:to-gray-900">
+    <Card className="relative flex flex-col bg-opacity-10 bg-gradient-to-r from-purple-200 to-purple-300 bg-clip-padding p-4 backdrop-blur-sm backdrop-filter">
       <CardHeader>
         <div
-          className="inline-flex whitespace-pre-wrap text-4xl font-bold mt-12"
+          className="inline-flex whitespace-pre-wrap text-4xl font-bold mt-2"
           style={{ color: "#4c2882" }}
         >
           Cut the
@@ -221,16 +221,16 @@ export function SurveyCard() {
         <div className="inline-flex whitespace-pre-wrap text-xl font-bold">
           <SplitText />
         </div>
-        <CardDescription className="absolute top-0 right-0 p-4 mr-8 mt-2 text-right">
+        <CardDescription className="mr-0 mt-12 text-right">
           <CardTitle className="mb-2">Predict your most likely cancer types</CardTitle>
-          <CardTitle className="mb-2">And receive AI personalized recommendations</CardTitle>
+          <CardTitle className="mb-2">And receive personalized AI recommendations</CardTitle>
           <CardTitle className="mb-2">Through a short survey!</CardTitle>
         </CardDescription>
-        <Dialog>
+        <Dialog >
           <DialogTrigger asChild>
-            <AiButton as="div" className="flex justify-end mr-4"/>
+            <AiButton as="div" className=""/>
           </DialogTrigger> 
-          <DialogContent className="w-[95vw] max-w-6xl h-[90vh] p-10">
+          <DialogContent className="w-[95vw] max-w-6xl h-[90vh] p-10 bg-gradient-to-r from-pink-100 to-pink-200">
             <DialogHeader className="mb-8">
               <DialogTitle className="inline-flex whitespace-pre-wrap text-3xl justify-center font-bold text-[#4c2882]">
                 Early Detection Survey
@@ -379,17 +379,17 @@ export default function Home() {
     <CarouselSpacing />
 
     {/* Info Section */}
-    <div className="mt-5 flex flex-wrap justify-center w-full gap-4 sm:gap-6">
+    <div className="mt-5 flex flex-wrap justify-center w-full gap-6 lg:gap-20">
       <div className="flex flex-wrap justify-center gap-4">
         <WeatherCard />
         <WaterTracker />
       </div>
       <FactCard />
     </div>
-        <div className="mt-16">
-          <SurveyCard />
-        </div>
-      </main>
+    <div className="mt-16">
+      <SurveyCard />
+    </div>
+  </main>
 
     </div>
 
