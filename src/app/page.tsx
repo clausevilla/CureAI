@@ -6,11 +6,11 @@ import { TextLoop } from '@/components/ui/text-loop';
 import WaterTracker from '@/components/ui/water-tracker';
 import Ticker from '@/components/ui/ticker';
 import WeatherCard from '@/components/ui/weather-card';
-import SplitText from '@/components/ui/split-text';
 import AiButton from '@/components/ui/ai-button';
 import { Terminal } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useState } from "react";
+import TypingText from "@/components/ui/typing-text";
 
 import {
   Dialog,
@@ -51,6 +51,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+
 
 export function TextLoopCustomVariantsTransition() {
   return (
@@ -176,21 +177,11 @@ export function FactCard() {
   )
 }
 
-type SliderProps = React.ComponentProps<typeof Slider>
-export function SliderDemo({ className, ...props }: SliderProps) {
-  return (
-    <Slider
-      defaultValue={[50]}
-      max={100}
-      step={1}
-      className={cn("w-[60%]", className)}
-      {...props}
-    />
-  )
-}
-
-export function SurveyCard() {
-  // State for form values
+export function SurveyDialog() {
+  // Dialog open state
+  const [open, setOpen] = useState(false);
+  
+  // Form states
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const [sliderValues, setSliderValues] = useState({
@@ -207,138 +198,130 @@ export function SurveyCard() {
       [name]: value
     }));
   };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission here
+    console.log({
+      age,
+      gender,
+      sliderValues
+    });
+    setOpen(false); // Close dialog after submission
+  };
+
   return (
-    <Card className="relative flex flex-col bg-opacity-10 bg-gradient-to-r from-purple-200 to-purple-300 bg-clip-padding p-4 backdrop-blur-sm backdrop-filter">
-      <CardHeader>
-        <div
-          className="inline-flex whitespace-pre-wrap text-4xl font-bold mt-2"
-          style={{ color: "#4c2882" }}
-        >
-          Cut the
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="inline-flex whitespace-pre-wrap text-xl font-bold">
-          <SplitText />
-        </div>
-        <CardDescription className="mr-0 mt-12 text-right">
-          <CardTitle className="mb-2">Predict your most likely cancer types</CardTitle>
-          <CardTitle className="mb-2">And receive personalized AI recommendations</CardTitle>
-          <CardTitle className="mb-2">Through a short survey!</CardTitle>
-        </CardDescription>
-        <Dialog >
-          <DialogTrigger asChild>
-            <AiButton as="div" className=""/>
-          </DialogTrigger> 
-          <DialogContent className="w-[95vw] max-w-6xl h-[90vh] p-10 bg-gradient-to-r from-pink-100 to-pink-200">
-            <DialogHeader className="mb-8">
-              <DialogTitle className="inline-flex whitespace-pre-wrap text-3xl justify-center font-bold text-[#4c2882]">
-                Early Detection Survey
-              </DialogTitle>
-            </DialogHeader>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <AiButton as="div" />
+      </DialogTrigger>
+      <DialogContent className="w-[95vw] max-w-6xl h-[90vh] p-10 bg-gradient-to-r from-pink-100 to-pink-200">
+        <DialogHeader className="mb-8">
+          <DialogTitle className="inline-flex whitespace-pre-wrap text-3xl justify-center font-bold text-[#4c2882]">
+            Early Detection Survey
+          </DialogTitle>
+        </DialogHeader>
 
-            <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-              {/* Age and Gender Section */}
-              <div className="grid grid-cols-2 gap-8">
-                <div className="space-y-3">
-                  <Label htmlFor="age-select" className="text-base font-medium">Age Range</Label>
-                  <Select value={age} onValueChange={setAge}>
-                    <SelectTrigger id="age-select" className="w-full">
-                      <SelectValue placeholder="Select Age" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="18-20">18-20</SelectItem>
-                      <SelectItem value="21-30">21-30</SelectItem>
-                      <SelectItem value="31-40">31-40</SelectItem>
-                      <SelectItem value="41-50">41-50</SelectItem>
-                      <SelectItem value="51+">51+</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-3">
-                  <Label htmlFor="gender-select" className="text-base font-medium">Gender</Label>
-                  <Select value={gender} onValueChange={setGender}>
-                    <SelectTrigger id="gender-select" className="w-full">
-                      <SelectValue placeholder="Select Gender" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="female">Female</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-          
-              {/* Sliders Section */}
-              <div className="space-y-6">
-                {[
-                  { label: "Are you a smoker?", name: "smoker" },
-                  { label: "Alcohol Consumption", name: "alcohol" },
-                  { label: "Level of physical activity", name: "activity" },
-                  { label: "Level of air pollution in your environment", name: "pollution" },
-                  { label: "Level of sun exposure", name: "sunExposure" }
-                ].map(({ label, name }) => (
-                  <div key={name} className="space-y-3">
-                    <Label htmlFor={`slider-${name}`} className="text-base font-medium">
-                      {label}
-                    </Label>
-                    <div className="flex items-center gap-4">
-                      <Slider
-                        id={`slider-${name}`}
-                        min={0}
-                        max={10}
-                        step={1}
-                        value={sliderValues[name]}
-                        onValueChange={(value) => handleSliderChange(name, value)}
-                        className="flex-1 [&_[role=slider]]:bg-white [&_[role=slider]]:border-black [&_[role=slider]]:focus:ring-white [&_.relative]:bg-[#CBC3E3]"
-                      />
-                      <span className="w-8 text-right">{sliderValues[name]}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+        <form className="space-y-8" onSubmit={handleSubmit}>
+          {/* Age and Gender Section */}
+          <div className="grid grid-cols-2 gap-8">
+            <div className="space-y-3">
+              <Label htmlFor="age-select" className="text-base font-medium">Age Range</Label>
+              <Select value={age} onValueChange={setAge}>
+                <SelectTrigger id="age-select" className="w-full">
+                  <SelectValue placeholder="Select Age" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="18-20">18-20</SelectItem>
+                  <SelectItem value="21-30">21-30</SelectItem>
+                  <SelectItem value="31-40">31-40</SelectItem>
+                  <SelectItem value="41-50">41-50</SelectItem>
+                  <SelectItem value="51+">51+</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-3">
+              <Label htmlFor="gender-select" className="text-base font-medium">Gender</Label>
+              <Select value={gender} onValueChange={setGender}>
+                <SelectTrigger id="gender-select" className="w-full">
+                  <SelectValue placeholder="Select Gender" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="male">Male</SelectItem>
+                  <SelectItem value="female">Female</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
 
-              {/* Input Fields Section */}
-              <div className="space-y-6">
-                <div className="space-y-3">
-                  <Label htmlFor="city-input" className="text-base font-medium">City</Label>
-                  <Input id="city-input" placeholder="Enter your city" className="w-full" />
-                </div>
-                
-                <div className="space-y-3">
-                  <Label htmlFor="genetic-history-input" className="text-base font-medium">Genetic History</Label>
-                  <Input id="genetic-history-input" placeholder="Enter any known genetic history" className="w-full" />
-                </div>
-              </div>
-
-              {/* Checkbox Section */}
-              <div className="flex items-center space-x-3">
-                <input 
-                  type="checkbox" 
-                  id="passive-smoker-checkbox"
-                  className="h-5 w-5 rounded border-gray-300 text-purple-500 focus:ring-purple-500"
-                />
-                <Label 
-                  htmlFor="passive-smoker-checkbox" 
-                  className="text-base font-medium"
-                >
-                  Are you a passive smoker?
+          {/* Sliders Section */}
+          <div className="space-y-6">
+            {[
+              { label: "Are you a smoker?", name: "smoker" },
+              { label: "Alcohol Consumption", name: "alcohol" },
+              { label: "Level of physical activity", name: "activity" },
+              { label: "Level of air pollution in your environment", name: "pollution" },
+              { label: "Level of sun exposure", name: "sunExposure" }
+            ].map(({ label, name }) => (
+              <div key={name} className="space-y-3">
+                <Label htmlFor={`slider-${name}`} className="text-base font-medium">
+                  {label}
                 </Label>
+                <div className="flex items-center gap-4">
+                  <Slider
+                    id={`slider-${name}`}
+                    min={0}
+                    max={10}
+                    step={1}
+                    value={sliderValues[name]}
+                    onValueChange={(value) => handleSliderChange(name, value)}
+                    className="flex-1 [&_[role=slider]]:bg-white [&_[role=slider]]:border-black [&_[role=slider]]:focus:ring-white [&_.relative]:bg-[#CBC3E3]"
+                  />
+                  <span className="w-8 text-right">{sliderValues[name]}</span>
+                </div>
               </div>
+            ))}
+          </div>
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full inline-flex items-center justify-center rounded-lg bg-black px-6 py-3 text-sm font-medium text-zinc-50 dark:bg-white dark:text-zinc-900 hover:bg-opacity-90 transition-colors"
-              >
-                Submit
-              </button>
-            </form>
-          </DialogContent>
-        </Dialog>
-      </CardContent>
-    </Card>
+          {/* Input Fields Section */}
+          <div className="space-y-6">
+            <div className="space-y-3">
+              <Label htmlFor="city-input" className="text-base font-medium">City</Label>
+              <Input id="city-input" placeholder="Enter your city" className="w-full" />
+            </div>
+
+            <div className="space-y-3">
+              <Label htmlFor="genetic-history-input" className="text-base font-medium">Genetic History</Label>
+              <Input id="genetic-history-input" placeholder="Enter any known genetic history" className="w-full" />
+            </div>
+          </div>
+
+          {/* Checkbox Section */}
+          <div className="flex items-center space-x-3">
+            <input
+              type="checkbox"
+              id="passive-smoker-checkbox"
+              className="h-5 w-5 rounded border-gray-300 text-purple-500 focus:ring-purple-500"
+            />
+            <Label
+              htmlFor="passive-smoker-checkbox"
+              className="text-base font-medium"
+            >
+              Are you a passive smoker?
+            </Label>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full inline-flex items-center justify-center rounded-lg bg-black px-6 py-3 text-sm font-medium text-zinc-50 dark:bg-white dark:text-zinc-900 hover:bg-opacity-90 transition-colors"
+          >
+            Submit
+          </button>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -386,12 +369,21 @@ export default function Home() {
       </div>
       <FactCard />
     </div>
-    <div className="mt-16">
-      <SurveyCard />
+    <div className="mt-6">
+      <div className="lg:min-w-96 lg:max-w-96 rounded-sm bg-gray-100 px-4 py-2 text-purple-900 shadow-lg">
+      <TypingText
+        alwaysVisibleCount={1}
+        delay={60}
+        repeat={true}
+        text="> This is a smooth typing text"
+        waitTime={500}
+        />
+
+    </div>
+      <SurveyDialog />
+      <Slider />
     </div>
   </main>
-
-    </div>
-
+  </div>
   );
 }
