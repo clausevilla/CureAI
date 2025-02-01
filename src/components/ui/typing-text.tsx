@@ -6,7 +6,7 @@ interface TypingTextProps {
   /**
    * Text to type
    */
-  text: string;
+  texts: string[];
 
   /**
    * Delay between typing each character or word (smooth mode) in milliseconds
@@ -149,96 +149,98 @@ function CursorWrapper({
 }
 
 function Type({
-  text,
-  repeat,
-  cursor,
-  delay,
-  grow,
-  className,
-  alwaysVisibleCount,
-  smooth,
-  waitTime = 1000,
-  onComplete,
-  hideCursorOnComplete,
-}: TypingTextProps) {
-  const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState<TypingDirection>(TypingDirection.Forward);
-  const [isComplete, setIsComplete] = useState(false);
-
-  const words = useMemo(() => text.split(/\s+/), [text]);
-  const total = smooth ? words.length : text.length;
-
-  useEffect(() => {
-    // eslint-disable-next-line prefer-const
-    let interval: NodeJS.Timeout;
-
-    const startTyping = () => {
-      setIndex((prevDir) => {
-        if (direction === TypingDirection.Backward && prevDir === TypingDirection.Forward) {
-          clearInterval(interval);
-        } else if (direction === TypingDirection.Forward && prevDir === total - 1) {
-          clearInterval(interval);
-        }
-        return prevDir + direction;
-      });
-    };
-
-    interval = setInterval(startTyping, delay);
-    return () => clearInterval(interval);
-  }, [total, direction, delay]);
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-
-    if (index >= total && repeat) {
-      timeout = setTimeout(() => {
-        setDirection(-1);
-      }, waitTime);
-    }
-
-    if (index <= 0 && repeat) {
-      timeout = setTimeout(() => {
-        setDirection(1);
-      }, waitTime);
-    }
-    return () => clearTimeout(timeout);
-  }, [index, total, repeat, waitTime]);
-
-  useEffect(() => {
-    if (index === total && !repeat) {
-      setIsComplete(true);
-      onComplete?.();
-    }
-  }, [index, total, repeat, onComplete]);
-
-  const waitingNextCycle = index === total || index === 0;
-
-  return (
-    <div className={cn("relative font-mono", className)}>
-      {!grow && <div className="invisible">{text}</div>}
-      <div
-        className={cn({
-          "absolute inset-0 h-full w-full": !grow,
-        })}
-      >
-        {smooth ? (
-          <SmoothEffect words={words} index={index} alwaysVisibleCount={alwaysVisibleCount ?? 1} />
-        ) : (
-          <NormalEffect text={text} index={index} alwaysVisibleCount={alwaysVisibleCount ?? 1} />
-        )}
-        <CursorWrapper
-          waiting={waitingNextCycle}
-          visible={Boolean(!smooth && cursor && (!hideCursorOnComplete || !isComplete))}
+    texts,
+    repeat,
+    cursor,
+    delay,
+    grow,
+    className,
+    alwaysVisibleCount,
+    smooth,
+    waitTime = 1000,
+    onComplete,
+    hideCursorOnComplete,
+  }: TypingTextProps) {
+    const [textIndex, setTextIndex] = useState(0);
+    const [index, setIndex] = useState(0);
+    const [direction, setDirection] = useState<TypingDirection>(TypingDirection.Forward);
+    const [isComplete, setIsComplete] = useState(false);
+  
+    const currentText = texts[textIndex];
+    const words = useMemo(() => currentText.split(/\s+/), [currentText]);
+    const total = smooth ? words.length : currentText.length;
+  
+    useEffect(() => {
+      let interval: NodeJS.Timeout;
+  
+      const startTyping = () => {
+        setIndex((prevDir) => {
+          if (direction === TypingDirection.Backward && prevDir === TypingDirection.Forward) {
+            clearInterval(interval);
+          } else if (direction === TypingDirection.Forward && prevDir === total - 1) {
+            clearInterval(interval);
+          }
+          return prevDir + direction;
+        });
+      };
+  
+      interval = setInterval(startTyping, delay);
+      return () => clearInterval(interval);
+    }, [total, direction, delay]);
+  
+    useEffect(() => {
+      let timeout: NodeJS.Timeout;
+  
+      if (index >= total && repeat) {
+        timeout = setTimeout(() => {
+          setDirection(-1);
+        }, waitTime);
+      }
+  
+      if (index <= 0 && repeat) {
+        timeout = setTimeout(() => {
+          setDirection(1);
+          setTextIndex((prevIndex) => (prevIndex + 1) % texts.length);
+        }, waitTime);
+      }
+      return () => clearTimeout(timeout);
+    }, [index, total, repeat, waitTime, texts.length]);
+  
+    useEffect(() => {
+      if (index === total && !repeat) {
+        setIsComplete(true);
+        onComplete?.();
+      }
+    }, [index, total, repeat, onComplete]);
+  
+    const waitingNextCycle = index === total || index === 0;
+  
+    return (
+      <div className={cn("relative font-mono", className)}>
+        {!grow && <div className="invisible">{currentText}</div>} {/* Fixed: Use `currentText` */}
+        <div
+          className={cn({
+            "absolute inset-0 h-full w-full": !grow,
+          })}
         >
-          {cursor}
-        </CursorWrapper>
+          {smooth ? (
+            <SmoothEffect words={words} index={index} alwaysVisibleCount={alwaysVisibleCount ?? 1} />
+          ) : (
+            <NormalEffect text={currentText} index={index} alwaysVisibleCount={alwaysVisibleCount ?? 1} />
+          )}
+          <CursorWrapper
+            waiting={waitingNextCycle}
+            visible={Boolean(!smooth && cursor && (!hideCursorOnComplete || !isComplete))}
+          >
+            {cursor}
+          </CursorWrapper>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
 export default function TypingText({
-  text,
+  texts,
   repeat = true,
   cursor = <Blinker />,
   delay = 32,
@@ -252,12 +254,12 @@ export default function TypingText({
 }: TypingTextProps) {
   return (
     <Type
-      key={text}
+      key={texts.join()} 
       delay={delay ?? 32}
       waitTime={waitTime ?? 1000}
       grow={grow}
       repeat={repeat}
-      text={text}
+      texts={texts}
       cursor={cursor}
       className={className}
       smooth={smooth}

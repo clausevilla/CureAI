@@ -375,7 +375,11 @@ export default function Home() {
         alwaysVisibleCount={1}
         delay={60}
         repeat={true}
-        text="> This is a smooth typing text"
+        texts={[ 
+          "> This is the first text",
+          "> This is the second text",
+          "> This is the third text"
+        ]}
         waitTime={500}
         />
 
