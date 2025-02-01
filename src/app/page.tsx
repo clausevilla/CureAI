@@ -12,11 +12,14 @@ import { Slider } from "@/components/ui/slider";
 import { useState } from "react";
 import TypingText from "@/components/ui/typing-text";
 
+// the api function
+import { sendLifestyleMessage, LifestyleData } from "@/utils/api";
+
 import {
   Dialog,
   DialogDescription,
   DialogContent,
-  DialogHeader,
+  DialogHeader, 
   DialogTitle,
   DialogTrigger,
   DialogClose,
@@ -47,11 +50,12 @@ import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-
 
 export function TextLoopCustomVariantsTransition() {
   return (
@@ -101,14 +105,21 @@ export function TextLoopCustomVariantsTransition() {
   );
 }
 
-const items = Array(6).fill(null);
+const items = [
+  { title: "Lung Cancer", description: "Take a quick health survey." },
+  { title: "Brain Cancer", description: "Assess your risk factors." },
+  { title: "Kidney Cancer", description: "Track your daily habits." },
+  { title: "Breast Cancer", description: "Get personalized meal plans." },
+  { title: "Prostate Cancer", description: "Stay active and healthy." },
+  { title: "Ovarian Cancer", description: "Understand your genetics." },
+];
 
-export function CardWithForm() {
+export function CardWithForm({title, description}) {
   return (
     <Card className="lg:w-[350px]">
       <CardHeader>
-        <CardTitle>Create project</CardTitle>
-        <CardDescription>Deploy your new project in one-click.</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <form>
@@ -135,8 +146,7 @@ export function CardWithForm() {
         </form>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button>Deploy</Button>
+        <Button className="bg-[#4c2882] text-white w-full py-3">Deploy</Button>
       </CardFooter>
     </Card>
   )
@@ -147,16 +157,19 @@ export function CarouselSpacing() {
   return (
     <Carousel className="w-full max-w-6xl">
       <CarouselContent className="-ml-1">
-        {items.map((_, index) => (
-            <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-              <CardWithForm />
-            </CarouselItem>
-          ))}
+        {items.map((item, index) => (
+          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+            <CardWithForm 
+              title={item.title} 
+              description={item.description} 
+            />
+          </CarouselItem>
+        ))}
       </CarouselContent>
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
-  )
+  );
 }
 
 export function FactCard() {
@@ -177,13 +190,20 @@ export function FactCard() {
   )
 }
 
+
 export function SurveyDialog() {
   // Dialog open state
   const [open, setOpen] = useState(false);
   
   // Form states
+  const [showForm, setShowForm] = useState(true);
+  const [showAiResponse, setShowAiResponse] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
+  const [city, setCity] = useState("");
+  const [geneticHistory, setGeneticHistory] = useState("");
+  const [passiveSmoker, setPassiveSmoker] = useState(0);
   const [sliderValues, setSliderValues] = useState({
     smoker: [0],
     alcohol: [0],
@@ -191,6 +211,7 @@ export function SurveyDialog() {
     pollution: [0],
     sunExposure: [0]
   });
+  const [aiResponse, setAiResponse] = useState("");
 
   const handleSliderChange = (name: string, value: number[]) => {
     setSliderValues(prev => ({
@@ -205,58 +226,131 @@ export function SurveyDialog() {
     console.log({
       age,
       gender,
-      sliderValues
+      sliderValues,
+      passiveSmoker,
+      city,
+      geneticHistory
     });
-    setOpen(false); // Close dialog after submission
+    // open the dialog with the ai api response
+    // AiDialog
+    // setOpen(false); // Close dialog after submission
+    // pass values into lifestyledata interface
+
+    setShowLoading(true);
+    setShowForm(false);
+
+    const lifestyleData: LifestyleData = {
+      sex: gender,
+      age: parseInt(age),
+      smoker: sliderValues.smoker[0],
+      alcohol: sliderValues.alcohol[0],
+      physicalActivity: sliderValues.activity[0],
+      airPollution: sliderValues.pollution[0],
+      sunExposure: sliderValues.sunExposure[0],
+      passiveSmoker: (passiveSmoker == 1) ? true : false,
+      geneticHistory: geneticHistory,
+      city: city
+    };
+    
+    sendLifestyleMessage(lifestyleData)
+      .then((response) => {
+        console.log(response);
+        setAiResponse(response);
+        setShowLoading(false);
+        setShowAiResponse(true);
+        setOpen(true);
+      })
+      .catch((error) => {
+        setShowLoading(false);
+        setShowForm(true);
+        console.error(error);
+      });
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <AiButton as="div" />
+        <div className="flex items-center justify-center">
+        <AiButton as="div" className="justify-center"/>
+        </div>
       </DialogTrigger>
-      <DialogContent className="w-[95vw] max-w-6xl h-[90vh] p-10 bg-gradient-to-r from-pink-100 to-pink-200">
+      <DialogContent className="w-[80vw] max-w-4xl h-[90vh] p-10 bg-white overflow-y-auto">
         <DialogHeader className="mb-8">
           <DialogTitle className="inline-flex whitespace-pre-wrap text-3xl justify-center font-bold text-[#4c2882]">
             Early Detection Survey
           </DialogTitle>
         </DialogHeader>
 
-        <form className="space-y-8" onSubmit={handleSubmit}>
+        {/* loading panel */}
+        <div hidden={!showLoading} className="flex items-center justify-center h-full">
+          <LifeLine color="#2929ac" size="medium" text="" textColor="" />
+        </div>
+
+        {/* loading panel animation */}
+        <div hidden={!showLoading}>
+          
+        </div>
+
+        <form className="space-y-8" onSubmit={handleSubmit} hidden={!showForm}>
           {/* Age and Gender Section */}
           <div className="grid grid-cols-2 gap-8">
             <div className="space-y-3">
-              <Label htmlFor="age-select" className="text-base font-medium">Age Range</Label>
-              <Select value={age} onValueChange={setAge}>
-                <SelectTrigger id="age-select" className="w-full">
-                  <SelectValue placeholder="Select Age" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="18-20">18-20</SelectItem>
-                  <SelectItem value="21-30">21-30</SelectItem>
-                  <SelectItem value="31-40">31-40</SelectItem>
-                  <SelectItem value="41-50">41-50</SelectItem>
-                  <SelectItem value="51+">51+</SelectItem>
-                </SelectContent>
-              </Select>
+              <label htmlFor="number-input" className="text-base font-medium text-[#4c2882]">Select age:</label>
+              <input 
+              type="number" 
+              id="number-input" 
+              onChange={(e) => setAge(e.target.value)}
+              aria-describedby="helper-text-explanation" 
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
+              placeholder="20" 
+              required 
+              min={12} 
+              max={110} 
+              />
             </div>
             <div className="space-y-3">
-              <Label htmlFor="gender-select" className="text-base font-medium">Gender</Label>
-              <Select value={gender} onValueChange={setGender}>
-                <SelectTrigger id="gender-select" className="w-full">
-                  <SelectValue placeholder="Select Gender" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label htmlFor="gender-select" className="text-base font-medium text-[#4c2882]">Gender</Label>
+              <div className="flex items-center mb-4">
+              <input 
+                id="default-radio-1" 
+                type="radio" 
+                value="male" 
+                name="gender" 
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                checked={gender === "male"}
+                onChange={() => setGender("male")}
+              />
+              <label htmlFor="default-radio-1" className="ms-2 text-sm font-medium text-gray-900">Male</label>
+              </div>
+              <div className="flex items-center">
+              <input 
+                id="default-radio-2" 
+                type="radio" 
+                value="female" 
+                name="gender" 
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                checked={gender === "female"}
+                onChange={() => setGender("female")}
+              />
+              <label htmlFor="default-radio-2" className="ms-2 text-sm font-medium text-gray-900">Female</label>
+              </div>
+              <div className="flex items-center">
+              <input 
+                id="default-radio-3" 
+                type="radio" 
+                value="other" 
+                name="gender" 
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                checked={gender === "other"}
+                onChange={() => setGender("other")}
+              />
+              <label htmlFor="default-radio-3" className="ms-2 text-sm font-medium text-gray-900">Other</label>
+              </div>
             </div>
           </div>
 
           {/* Sliders Section */}
-          <div className="space-y-6">
+          <div className="space-y-6 text-[#4c2882]">
             {[
               { label: "Are you a smoker?", name: "smoker" },
               { label: "Alcohol Consumption", name: "alcohol" },
@@ -276,7 +370,7 @@ export function SurveyDialog() {
                     step={1}
                     value={sliderValues[name]}
                     onValueChange={(value) => handleSliderChange(name, value)}
-                    className="flex-1 [&_[role=slider]]:bg-white [&_[role=slider]]:border-black [&_[role=slider]]:focus:ring-white [&_.relative]:bg-[#CBC3E3]"
+                    className="flex-1 [&_[role=slider]]:bg-[#4c2882] [&_[role=slider]]:border-[#4c2882] [&_[role=slider]]:focus:ring-white [&_.relative]:bg-[#CBC3E3]"
                   />
                   <span className="w-8 text-right">{sliderValues[name]}</span>
                 </div>
@@ -287,38 +381,45 @@ export function SurveyDialog() {
           {/* Input Fields Section */}
           <div className="space-y-6">
             <div className="space-y-3">
-              <Label htmlFor="city-input" className="text-base font-medium">City</Label>
-              <Input id="city-input" placeholder="Enter your city" className="w-full" />
+              <Label htmlFor="city-input" className="text-base font-medium text-[#4c2882]">City</Label>
+              <Input id="city-input" placeholder="Enter your city" className="w-full bg-white" onChange={(e) => setCity(e.target.value)} />
             </div>
 
             <div className="space-y-3">
-              <Label htmlFor="genetic-history-input" className="text-base font-medium">Genetic History</Label>
-              <Input id="genetic-history-input" placeholder="Enter any known genetic history" className="w-full" />
+              <Label htmlFor="genetic-history-input" className="text-base font-medium  text-[#4c2882]">Genetic History</Label>
+              <Input id="genetic-history-input" placeholder="Enter any known genetic history" className="w-full bg-white" onChange={(e) => setGeneticHistory(e.target.value)} />
             </div>
           </div>
 
           {/* Checkbox Section */}
-          <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3">
             <input
               type="checkbox"
               id="passive-smoker-checkbox"
               className="h-5 w-5 rounded border-gray-300 text-purple-500 focus:ring-purple-500"
+              onChange={(e) => setSliderValues(prev => ({
+              ...prev,
+              passiveSmoker: e.target.checked ? 1 : 0
+              }))}
             />
             <Label
               htmlFor="passive-smoker-checkbox"
-              className="text-base font-medium"
+              className="text-base font-medium text-[#4c2882]"
             >
               Are you a passive smoker?
             </Label>
-          </div>
+            </div>
 
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full inline-flex items-center justify-center rounded-lg bg-black px-6 py-3 text-sm font-medium text-zinc-50 dark:bg-white dark:text-zinc-900 hover:bg-opacity-90 transition-colors"
+            className="w-full inline-flex items-center justify-center rounded-lg bg-[#4c2882] px-6 py-3 text-sm font-medium text-zinc-50 hover:bg-opacity-90 transition-colors"
           >
             Submit
           </button>
+          <div className="fixed bottom-0 left-0 w-full h-full z-[-1] pointer-events-none">
+            <Lights />
+          </div>
         </form>
       </DialogContent>
     </Dialog>
@@ -369,16 +470,15 @@ export default function Home() {
       </div>
       <FactCard />
     </div>
-    <div className="mt-6">
-      <div className="lg:min-w-96 lg:max-w-96 rounded-sm bg-gray-100 px-4 py-2 text-purple-900 shadow-lg">
-      <TypingText
+    <div className="mt-6 flex flex-col w-full">
+      <div className="lg:min-w-96 lg:max-w-[1120px] rounded-sm items-start lg:ml-20 mb-8 px-4 py-2 text-purple-900 shadow-xl">
+      <TypingText 
         alwaysVisibleCount={1}
         delay={60}
-        repeat={true}
+        repeat={true} 
         texts={[ 
-          "> This is the first text",
-          "> This is the second text",
-          "> This is the third text"
+          "> Prevention is better than cure.",
+          "> Predict your most likely cancer types and receive personalized recommendations through a short survey!",
         ]}
         waitTime={500}
         />

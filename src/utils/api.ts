@@ -2,17 +2,17 @@ import axios from 'axios';
 
 const baseURL = 'http://localhost:3001';
 
-interface LifestyleData {
+export interface LifestyleData {
     sex: string;
     age: number;
-    city: string;
-    job: string;
-    smoker: boolean;
+    smoker: number;
+    alcohol: number;
+    physicalActivity: number;
+    airPollution: number;
+    sunExposure: number;
     passiveSmoker: boolean;
-    alcohol: boolean;
-    physicalActivity: string;
-    sunExposure: string;
-    geneticHistory: string[];
+    geneticHistory: string;
+    city: string;
 }
 
 export const sendLifestyleMessage = async (data: LifestyleData): Promise<string> => {

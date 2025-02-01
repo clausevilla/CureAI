@@ -152,7 +152,7 @@ export default function AiButton({ as: Component = "button", ...props }) {
             animationDelay: "0.5s",
             animationDuration: "2.5s",
           }}
-          className="absolute left-4 top-4 size-2.5 animate-sparkle fill-white"
+          className="size-2.5 animate-sparkle fill-white"
         />
 
         <span className="font-semibold">Take Survey</span>

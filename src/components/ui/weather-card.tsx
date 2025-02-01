@@ -1,4 +1,6 @@
 import { CircleArrowUp, Sun } from "lucide-react";
+import axios from 'axios';
+import { WeatherData } from "@/utils/weather-api";
 
 export default function WeatherCard() {
   return (
@@ -7,19 +9,22 @@ export default function WeatherCard() {
         <p className="inline-flex whitespace-pre-wrap text-lg font-bold" style={{ color: "#4c2882" }}>Optimal UV</p>
         <div className="flex items-center">
           <Sun className="h-10 w-10" style={{ color: "#4c2882" }} />
-          <p className="inline-flex whitespace-pre-wrap text-5xl font-bold" style={{ color: "#4c2882" }}>19&deg;</p>
+          <p className="inline-flex whitespace-pre-wrap text-5xl font-bold" style={{ color: "#4c2882" }}>
+          weatherData.daily.uvIndex;
+          </p>
         </div>
         <p className="inline-flex whitespace-pre-wrap text-m" style={{ color: "#4c2882" }}>Advised by;</p>
       </div>
       <div className="flex justify-between rounded-xl bg-gray-400 bg-opacity-30 bg-clip-padding py-1 backdrop-blur-lg backdrop-filter">
         <div className="flex items-center gap-1 px-2 text-orange-500">
           <CircleArrowUp className="h-5 w-5" />
-          24&deg;
+         {/* implement api from weather api */}
+         weatherData.temperature.max;
         </div>
         <p className="text-black opacity-50">|</p>
         <div className="flex items-center gap-1 px-3 text-green-800 dark:text-green-200">
           <CircleArrowUp className="h-5 w-5 rotate-180" />
-          9&deg;
+          weatherData.temperature.min;
         </div>
       </div>
     </div>
