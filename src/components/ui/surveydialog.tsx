@@ -140,18 +140,19 @@ export function SurveyDialog() {
           {/* loading panel */}
           {showLoading && <div className="flex items-center justify-center h-full">
             <LifeLine color="#2929ac" size="medium" text="" textColor="" />
+            <Lights/>
           </div>}
   
           {/* AI result */}
           {showAiResponse && <div hidden={!showAiResponse}>
             <div className="space-y-4 p-4">
-              <h2 className="text-xl font-bold">Predicted Cancer Types</h2>
+              <h2 className="text-xl font-bold text-[#4c2882]">Predicted Cancer Types</h2>
               {aiResponse.cancerTypes?.length > 0 ? (
                 aiResponse.cancerTypes.map((item, index) => (
                   <Card key={index} className="p-4">
                     <CardContent>
                       <Badge className="text-lg mb-2">{item.type}</Badge>
-                      <p className="text-gray-700">{item.reason}</p>
+                      <p className="text-purple-900">{item.reason}</p>
                     </CardContent>
                   </Card>
                 ))
@@ -159,11 +160,11 @@ export function SurveyDialog() {
                 <p>No cancer types predicted.</p>
               )}
   
-              <h2 className="text-xl font-bold">Recommendations</h2>
+              <h2 className="text-xl font-bold text-[#4c2882]">Recommendations</h2>
               {aiResponse.recommendations?.length > 0 ? (
                 <ul className="list-disc pl-5">
                   {aiResponse.recommendations.map((rec, index) => (
-                    <li key={index} className="text-gray-700">{rec.recommendation}</li>
+                    <li key={index} className="text-[#4c2882]">{rec.recommendation}</li>
                   ))}
                 </ul>
               ) : (
@@ -174,6 +175,7 @@ export function SurveyDialog() {
             <div className="flex justify-center mt-8">
               <Button onClick={() => setOpen(false)} className="bg-[#4c2882] text-white w-full py-3">Close</Button>
             </div>
+            <Lights/>
           </div> }
   
           {showForm && <form className="space-y-8" onSubmit={handleSubmit} hidden={!showForm}>
