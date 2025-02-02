@@ -13,6 +13,7 @@ export interface LifestyleData {
     passiveSmoker: boolean;
     geneticHistory: string;
     city: string;
+
 }
 
 export const sendLifestyleMessage = async (data: LifestyleData): Promise<string> => {

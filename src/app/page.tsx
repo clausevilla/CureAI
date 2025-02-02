@@ -11,6 +11,10 @@ import { Terminal } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useState } from "react";
 import TypingText from "@/components/ui/typing-text";
+import { Badge } from "@/components/ui/badge"
+
+import { LifeLine } from "react-loading-indicators";
+import axios from "axios";
 
 // the api function
 import { sendLifestyleMessage, LifestyleData } from "@/utils/api";
@@ -106,27 +110,57 @@ export function TextLoopCustomVariantsTransition() {
 }
 
 const items = [
-  { title: "Lung Cancer", description: "Take a quick health survey." },
-  { title: "Brain Cancer", description: "Assess your risk factors." },
-  { title: "Kidney Cancer", description: "Track your daily habits." },
-  { title: "Breast Cancer", description: "Get personalized meal plans." },
-  { title: "Prostate Cancer", description: "Stay active and healthy." },
-  { title: "Ovarian Cancer", description: "Understand your genetics." },
+  { title: "Lung Cancer", description: "Go outside for fresh air" },
+  { title: "Brain Cancer", description: "Assess your risk factors" },
+  { title: "Kidney Cancer", description: "Maintain a healthy weight" },
+  { title: "Breast Cancer", description: "Limit alcohol consumption" },
+  { title: "Prostate Cancer", description: "Reduce fat intake" },
+  { title: "Ovarian Cancer", description: "Keep a healthy diet" },
 ];
 
 export function CardWithForm({title, description}) {
+  const [showAiResponse, setShowAiResponse] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+
+  const [aiResponse, setAiResponse] = useState("");
+
+  const handleSliderChange = (name: string, value: number[]) => {
+    setSliderValues(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission here
+    console.log({
+      age,
+      gender,
+    });
+  };
+  
   return (
     <Card className="lg:w-[350px]">
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle className="text-lg md:text-xl">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>
         <form>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" placeholder="Name of your project" />
+              <Label htmlFor="age">Enter Age</Label>
+              <Input id="age" placeholder="20" 
+              onChange={(e) => setAge(e.target.value)}
+              aria-describedby="helper-text-explanation" 
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
+              required 
+              min={12} 
+              max={110} 
+              />
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="framework">Framework</Label>
@@ -174,18 +208,19 @@ export function CarouselSpacing() {
 
 export function FactCard() {
   return (
-  <Card className="w-[600px] h-52">
+  <Card className="w-[600px] lg:h-52 h-62">
       <CardHeader>
+        <CardTitle className="text-lg md:text-xl">Did you know?</CardTitle>
       <Ticker
             className="text-4xl md:text-6xl"
-            value="456.78"
+            value="300 Billion"
           />
-        <CardTitle>Create project</CardTitle>
-        <CardDescription>Deploy your new project in one-click.</CardDescription>
+        <CardDescription className="lg:mt-6"> 
+        <strong className="text-bold">Of our cells are replaced daily!</strong>  <br /> And an adequate cellular hydration makes it possible.
+        <br /> Curious how more of your habits can influence cancer risk? 
+        <strong className="text-bold"> Scroll down to our survey!</strong>
+        </CardDescription>
       </CardHeader>
-      <CardFooter className="flex justify-end">
-        <Button>Deploy</Button>
-      </CardFooter>
     </Card>
   )
 }
@@ -255,7 +290,7 @@ export function SurveyDialog() {
     sendLifestyleMessage(lifestyleData)
       .then((response) => {
         console.log(response);
-        setAiResponse(response);
+        setAiResponse(JSON.parse(response.content));
         setShowLoading(false);
         setShowAiResponse(true);
         setOpen(true);
@@ -282,16 +317,45 @@ export function SurveyDialog() {
         </DialogHeader>
 
         {/* loading panel */}
-        <div hidden={!showLoading} className="flex items-center justify-center h-full">
+        {showLoading && <div className="flex items-center justify-center h-full">
           <LifeLine color="#2929ac" size="medium" text="" textColor="" />
-        </div>
+        </div>}
 
-        {/* loading panel animation */}
-        <div hidden={!showLoading}>
-          
-        </div>
+        {/* AI result */}
+        {showAiResponse && <div hidden={!showAiResponse}>
+          <div className="space-y-4 p-4">
+            <h2 className="text-xl font-bold">Predicted Cancer Types</h2>
+            {aiResponse.cancerTypes?.length > 0 ? (
+              aiResponse.cancerTypes.map((item, index) => (
+                <Card key={index} className="p-4">
+                  <CardContent>
+                    <Badge className="text-lg mb-2">{item.type}</Badge>
+                    <p className="text-gray-700">{item.reason}</p>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <p>No cancer types predicted.</p>
+            )}
 
-        <form className="space-y-8" onSubmit={handleSubmit} hidden={!showForm}>
+            <h2 className="text-xl font-bold">Recommendations</h2>
+            {aiResponse.recommendations?.length > 0 ? (
+              <ul className="list-disc pl-5">
+                {aiResponse.recommendations.map((rec, index) => (
+                  <li key={index} className="text-gray-700">{rec.recommendation}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No recommendations available.</p>
+            )}
+          </div>
+          {/* close button */}
+          <div className="flex justify-center mt-8">
+            <Button onClick={() => setOpen(false)} className="bg-[#4c2882] text-white w-full py-3">Close</Button>
+          </div>
+        </div> }
+
+        {showForm && <form className="space-y-8" onSubmit={handleSubmit} hidden={!showForm}>
           {/* Age and Gender Section */}
           <div className="grid grid-cols-2 gap-8">
             <div className="space-y-3">
@@ -420,13 +484,50 @@ export function SurveyDialog() {
           <div className="fixed bottom-0 left-0 w-full h-full z-[-1] pointer-events-none">
             <Lights />
           </div>
-        </form>
+        </form> }
       </DialogContent>
     </Dialog>
   );
 }
 
 export default function Home() {
+  const [latitude, setLatitude] = React.useState(0);
+  const [longitude, setLongitude] = React.useState(0);
+  const [uvIndex, setUvIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    // get the users geolocation if available
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position);
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+      });
+    } else {
+      console.log("Geolocation is not available. Using coordinates of Gothenburg, Sweden.");
+      setLatitude(57.7089);
+      setLongitude(11.9746);
+    }
+
+    // get the weather data
+    // headers
+    const headers = {
+      "x-access-token": "openuv-1c9alrm6mdykde-io",
+      "content-type": "application/json"
+    };
+
+    axios.get(`https://api.openuv.io/api/v1/uv?lat=${latitude}&lng=${longitude}`, { headers })
+      .then((response) => {
+        console.log(response.data);
+        // truncate the uv index to 1 decimal place
+        setUvIndex(parseFloat(response.data.result.uv.toFixed(1)));
+      })
+      .catch((error) => {
+        console.error(error);
+        setUvIndex(0);
+      });
+  }, []);
+
   return (
     <div>
   {/* Background Lights */}
@@ -453,7 +554,8 @@ export default function Home() {
       className="inline-flex text-sm sm:text-base text-center mt-8"
       style={{ color: '#4c2882' }}
     >
-      Intro text —
+      A real-world solution to a real-world problem — Swipe through the cards below  <br /> and 
+      explore the likelihood of developing a specific cancer type and how to prevent it!
     </p>
   </div>
 
@@ -465,24 +567,23 @@ export default function Home() {
     {/* Info Section */}
     <div className="mt-5 flex flex-wrap justify-center w-full gap-6 lg:gap-20">
       <div className="flex flex-wrap justify-center gap-4">
-        <WeatherCard />
-        <WaterTracker />
+        <WeatherCard uvIndex={uvIndex}/>
+        <WaterTracker dailyGoal={3000} />
       </div>
       <FactCard />
     </div>
-    <div className="mt-6 flex flex-col w-full">
-      <div className="lg:min-w-96 lg:max-w-[1120px] rounded-sm items-start lg:ml-20 mb-8 px-4 py-2 text-purple-900 shadow-xl">
+    <div className="mt-6 flex flex-col w-full justify-center items-center">
+      <div className="lg:min-w-[1000px] lg:max-w-[1120px] rounded-sm bg-white items-start mb-8 px-4 py-2 text-purple-900 shadow-xl">
       <TypingText 
         alwaysVisibleCount={1}
         delay={60}
         repeat={true} 
         texts={[ 
           "> Prevention is better than cure.",
-          "> Predict your most likely cancer types and receive personalized recommendations through a short survey!",
+          "> Receive personalized recommendations!",
         ]}
         waitTime={500}
         />
-
     </div>
       <SurveyDialog />
       <Slider />
