@@ -140,7 +140,9 @@ export function SurveyDialog() {
           {/* loading panel */}
           {showLoading && <div className="flex items-center justify-center h-full">
             <LifeLine color="#2929ac" size="medium" text="" textColor="" />
-            <Lights/>
+            <div className="fixed bottom-0 left-0 w-full h-full z-[-1] pointer-events-none">
+              <Lights/>
+            </div>
           </div>}
   
           {/* AI result */}
@@ -175,7 +177,9 @@ export function SurveyDialog() {
             <div className="flex justify-center mt-8">
               <Button onClick={() => setOpen(false)} className="bg-[#4c2882] text-white w-full py-3">Close</Button>
             </div>
-            <Lights/>
+            <div className="fixed bottom-0 left-0 w-full h-full z-[-1] pointer-events-none">
+              <Lights/>
+            </div>
           </div> }
   
           {showForm && <form className="space-y-8" onSubmit={handleSubmit} hidden={!showForm}>
