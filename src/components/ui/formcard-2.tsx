@@ -140,7 +140,7 @@ export function CardWithForm({title, description}) {
           </form>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button className="bg-[#4c2882] text-white w-full py-3">View Prediction</Button>
+          <Button className="bg-[#4c2882] text-white w-full py-3" disabled>View Prediction (Soon)</Button>
         </CardFooter>
       </Card>
     )
