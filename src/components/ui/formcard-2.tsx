@@ -75,13 +75,13 @@ export function CardWithForm({title, description}) {
         </CardHeader>
   
           {/* loading panel */}
-          {showLoading && <div className="flex items-center justify-center h-full">
+          {/* {showLoading && <div className="flex items-center justify-center h-full">
           <DotLottieReact src="https://lottie.host/ee9e5191-9319-432f-9122-5ebbedc65c17/PQtFPKPxiY.lottie"
           loop
           autoplay
           />
   
-          </div> }
+          </div> } */}
   
           {/* AI result */}
           {showAiResponse && <div hidden={!showAiResponse}>
