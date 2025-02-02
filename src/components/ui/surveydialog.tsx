@@ -203,7 +203,7 @@ export function SurveyDialog() {
                   type="radio" 
                   value="male" 
                   name="gender" 
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                  className="w-4 h-4 text-purple-900 bg-[#4c2882] border-[#4c2882] focus:ring-purple-900 focus:ring-2"
                   checked={gender === "male"}
                   onChange={() => setGender("male")}
                 />
