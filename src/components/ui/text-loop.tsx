@@ -65,4 +65,6 @@ export function TextLoop({
       </AnimatePresence>
     </div>
   );
+
+  
 }
