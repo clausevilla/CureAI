@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'https://cureai-backend.fly.dev';
+const baseURL = 'https://cureai-backend.onrender.com';
 
 export interface LifestyleData {
     sex: string;
