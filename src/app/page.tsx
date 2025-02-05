@@ -159,7 +159,7 @@ export default function Home() {
       <FactCard />
     </div>
     <div className="mt-6 flex flex-col w-full justify-center items-center">
-      <div className="lg:min-w-[1000px] lg:max-w-[1120px] rounded-sm bg-[#f0dffc] items-start mb-8 px-4 py-2 text-purple-900 shadow-xl">
+      <div className="lg:min-w-[1000px] lg:max-w-[1120px] rounded-sm bg-[#fcf8fd] items-start mb-8 px-4 py-2 text-purple-900 shadow-xl">
       <TypingText 
         alwaysVisibleCount={1}
         delay={60}
