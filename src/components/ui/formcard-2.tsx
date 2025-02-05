@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { CancerTypeData, sendCancerTypeMessage } from "@/utils/api-cards";
+import { CancerTypeData, sendCancerTypeMessage } from "@/utils/api";
 import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { LifeLine } from 'react-loading-indicators';
@@ -62,7 +62,7 @@ export function CardWithForm({title, description, cancerType}) {
     };
     
     return (
-      <Card className="lg:w-[350px]">
+      <Card className="lg:w-[350px] lg:min-h-[350px]">
         <CardHeader>
           <CardTitle className="text-lg md:text-xl">{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
@@ -70,37 +70,38 @@ export function CardWithForm({title, description, cancerType}) {
   
           {/* loading panel */}
           {showLoading && <div className="flex items-center justify-center h-full">
-            <LifeLine color="#2929ac" size="medium" text="" textColor="" />
+            <LifeLine color="#4c2882" size="medium" text="" textColor="" />
           </div> }
           
           {/* AI result */}
           {showAiResponse && <div>
-            <div className="space-y-4 p-4">
-              <h2 className="text-lg md:text-xl">Prediction Result</h2>
-                <p className={`text-purple-900 ${aiResponse.prediction ? "text-red-500" : "text-green-500"}`}>
+            <div className="space-y-4 p-6">
+              <hr className="rounded"/>
+              <h2 className="text-lg md:text-xl font-bold">Prediction Result</h2>
+                <p className={`text-sm ${aiResponse.prediction ? "text-red-900" : "text-green-900"}`}>
                 {aiResponse.prediction ? "Medium/High Risk" : "Low Risk"}
                 </p>
 
-              <h2 className="text-lg text-bold md:text-xl">Reasoning</h2>
-              <p className="text-purple-900 text-m">{aiResponse.reason}</p>
+              <h2 className="text-lg font-bold md:text-xl">Reasoning</h2>
+              <p className="text-purple-900 text-sm text-justify">{aiResponse.reason}</p>
 
-              <h2 className="text-lg text-bold md:text-xl">Recommendations</h2>
+              <h2 className="text-lg font-bold md:text-xl">Recommendations</h2>
               {aiResponse.recommendations?.length > 0 ? (
                 <ul className="list-disc pl-5">
                   {aiResponse.recommendations.map((rec, index) => (
-                    <li key={index} className="text-purple-900 text-m">{rec.recommendation}</li>
+                    <li key={index} className="text-justify text-purple-900 text-sm">{rec.recommendation}</li>
                   ))}
                 </ul>
               ) : (
                 <p>No recommendations available.</p>
               )}
 
-              <h2 className="text-lg text-bold md:text-xl">Self Checkup Steps</h2>
-              <p className="text-purple-900 text-m">{aiResponse.selfCheck}</p>
+              <h2 className="text-lg font-bold md:text-xl">Self Checkup Steps</h2>
+              <p className="text-purple-900 text-justify text-sm">{aiResponse.selfCheck}</p>
             </div>
 
-            <div className="flex justify-center mt-8">
-              <Button onClick={() => setShowAiResponse(false)} className="bg-[#4c2882] text-white w-full py-3">Retake</Button>
+            <div className="flex justify-center m-6 mt-2">
+              <Button onClick={() => {setShowAiResponse(false); setShowForm(true)}} className="mt-6 bg-[#4c2882] text-white w-full py-3">Retake</Button>
             </div>
           </div>}
   
@@ -118,11 +119,11 @@ export function CardWithForm({title, description, cancerType}) {
                 max={110} 
                 />
               </div>
-              <div className="flex flex-col space-y-1.5">
-                <Textarea placeholder="Enter any symptoms, relevant genetic history or other related aspects for the most accurate assessment." onChange={(e) => setMessage(e.target.value)} />
+              <div className="flex flex-col space-y-2.5">
+                <Textarea className="text-sm min-h-40 max-h-80 lg:min-h-20 lg:text-md" placeholder="Enter any symptoms, relevant genetic history or other related aspects for the most accurate assessment." onChange={(e) => setMessage(e.target.value)} />
               </div>
             </div>
-          <Button type="submit" className="bg-[#4c2882] text-white w-full py-3">View Prediction</Button>
+          <Button type="submit" className="mt-6 bg-[#4c2882] text-white w-full py-3">View Prediction</Button>
           </form>
         </CardContent> }
         </Card> 

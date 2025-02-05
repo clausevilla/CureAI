@@ -139,7 +139,7 @@ export function SurveyDialog() {
   
           {/* loading panel */}
           {showLoading && <div className="flex items-center justify-center h-full">
-            <LifeLine color="#2929ac" size="medium" text="" textColor="" />
+            <LifeLine color="#4c2882" size="medium" text="" textColor="" />
             <div className="fixed bottom-0 left-0 w-full h-full z-[-1] pointer-events-none">
               <Lights/>
             </div>
